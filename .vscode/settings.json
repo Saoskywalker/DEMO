@@ -1,0 +1,6 @@
+{
+    "files.exclude": {
+        "**/Listings": true,
+        "**/OUTPUT": true
+    }
+}
