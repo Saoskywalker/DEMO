@@ -211,7 +211,8 @@ void USART2_IRQHandler(void)
 {  
 	 if(USART_GetITStatus(USART2, USART_IT_RXNE) != RESET)
 	 {                  
-			dwReceiveByte(USART_ReceiveData(USART2));	//读取接收到的数据					
+			//dwReceiveByte(USART_ReceiveData(USART2));	//读取接收到的数据	
+			dwD2RecFrame(USART_ReceiveData(USART2));
 	 }   
 }
 

@@ -557,8 +557,8 @@
       <Focus>0</Focus>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\Library\dwDrive\dwDriver.c</PathWithFileName>
-      <FilenameWithoutPath>dwDriver.c</FilenameWithoutPath>
+      <PathWithFileName>.\Library\dwDriveD2\dwDriveD2.c</PathWithFileName>
+      <FilenameWithoutPath>dwDriveD2.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

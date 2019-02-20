@@ -367,7 +367,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F10X_MD,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>.\ST_Inc;.\User_Inc;.\Library\dwDrive</IncludePath>
+              <IncludePath>.\ST_Inc;.\User_Inc;.\Library\dwDrive;.\Library\dwDriveD2</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -541,9 +541,9 @@
           <GroupName>Library</GroupName>
           <Files>
             <File>
-              <FileName>dwDriver.c</FileName>
+              <FileName>dwDriveD2.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\Library\dwDrive\dwDriver.c</FilePath>
+              <FilePath>.\Library\dwDriveD2\dwDriveD2.c</FilePath>
             </File>
           </Files>
         </Group>

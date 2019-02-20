@@ -2,5 +2,12 @@
     "files.exclude": {
         "**/Listings": true,
         "**/OUTPUT": true
+    },
+    "files.associations": {
+        "usart.h": "c",
+        "sys.h": "c",
+        "applib.h": "c",
+        "dwdriver.h": "c",
+        "dwdrived2.h": "c"
     }
 }

@@ -344,12 +344,12 @@ void dwCalibration(void){
 // param id:  0--120;
 // param num: 1--120;
 void dwPlayMusic(u8 id, u8 num){
-	dwSendByte(0xAA);
-	dwSendByte(0x30);
-	dwSendByte(id);
-	dwSendByte(num);
-	dwSendByte(0xFF);   // 最大音量播放
-	dwSendOver();
+	// dwSendByte(0xAA);
+	// dwSendByte(0x30);
+	// dwSendByte(id);
+	// dwSendByte(num);
+	// dwSendByte(0xFF);   // 最大音量播放
+	// dwSendOver();
 }
 
 // 停止音乐

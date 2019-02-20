@@ -2,11 +2,12 @@
 #define _APP_LIB_H
 
 #include "UserBaseLib.h"
-#include "dwDriver.h"
+//#include "dwDriver.h"
 #include "usart.h"
 #include "delay.h"
 #include "adc.h"
 #include "stmflash.h"
+#include "dwDriveD2.h"
 
 //Temperature table
 #define TEMP_40 1418
@@ -89,6 +90,7 @@ extern u8 nextPage;
 #define FUNCTION_CLEAN 10
 #define FUNCTION_LANGUAGE 11
 #define FUNCTION_SPRAYER 12
+#define FUNCTION_CAM 13
 
 //Flash function
 #define FLASH_LANG_ADDR	 0X0800F7FC //language save
@@ -131,20 +133,21 @@ void PageRF(void);
 void PageScrubberAdj(void);
 void PageLanguage(void);
 void PageSprayer(void);
+void PageCAM(void);
 
 extern u8 BeeMod, BeeTime;
 void BeeFunction(void);
 //#define INLINE_MUSIC_BUTTON() {BeeMod = 0; BeeTime = 1;}
-#define INLINE_MUSIC_BUTTON()	dwPlayMusic(MSC_BUTTON, 1);
-#define INLINE_MUSIC_START() dwPlayMusic(MSC_START, 1);
-#define INLINE_MUSIC_STOP() dwPlayMusic(MSC_STOP, 1);
+#define INLINE_MUSIC_BUTTON()	{BeeMod = 0; BeeTime = 1;}
+#define INLINE_MUSIC_START() {BeeMod = 1; BeeTime = 1;}
+#define INLINE_MUSIC_STOP() {BeeMod = 2; BeeTime = 3;}
 //#define INLINE_MUSIC_START() {BeeMod = 1; BeeTime = 1;}
 //#define INLINE_MUSIC_STOP() {BeeMod = 2; BeeTime = 3;}
-#define INLINE_MUSIC_REDAY() dwPlayMusic(MSC_READY, 1);
-#define INLINE_MUSIC_POWERUP() dwPlayMusic(MSC_POWERUP, 1);
-#define INLINE_MUSIC_STANDBY() dwPlayMusic(MSC_STANDBY, 1);
+#define INLINE_MUSIC_REDAY() {BeeMod = 3; BeeTime = 1;}
+#define INLINE_MUSIC_POWERUP() //dwPlayMusic(MSC_POWERUP, 1);
+#define INLINE_MUSIC_STANDBY() {BeeMod = 3; BeeTime = 1;}
 #define INLINE_MUSIC_ERROR() {BeeMod = 2; BeeTime = 1;}
-#define INLINE_MUSIC_WATER_WARN() dwPlayMusic(MSC_WARN, 1);
+#define INLINE_MUSIC_WATER_WARN() {BeeMod = 1; BeeTime = 4;}
 #define INLINE_MUSIC_SCR_ADJ() {BeeMod = 1; BeeTime = 2;}
 
 //key scan

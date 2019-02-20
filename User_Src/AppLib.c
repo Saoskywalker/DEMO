@@ -5,6 +5,14 @@
 #define FRAME_HEAD 0xAA
 #define FRAME_END 0x55
 
+#define TIME_ADDRESS 0X1B00
+#define NUM_ADDRESS 0X1B08
+#define MODE_ADDRESS 0X1B04
+#define FRE_ADDRESS 0X1B0C
+#define START_ADDRESS 0X1001
+#define BOTTLE_ADDRESS 0X1006
+#define LEVEL_ADDRESS 0X100E
+
 //const u16 CoolIntensity[] = {0,1700,1800,1900,2000,2175,2275,2375,2475,2550,2625};	//2.2 2.4 2.6 2.8 3.0 3.2 3.4 3.6 3.8 4.0 
 u8 Flag1ms = 0;
 u8 TouchKey = 0;
@@ -29,55 +37,37 @@ const u16 BIO1IntensityTable[] = {36000, 30000, 29000, 28000, 27000, 26000};
 //{36000, 20000, 15000, 10000, 5000, 0};
 u16 RGBValue = 0;
 
-//Button press effect
-static const Button btnEnter  = {PIC_START_ANIMATION, 555, 192, 674, 310};
-static const Button btnClean = {PIC_CLEAN, 466,104,591,150};
-static const Button btnSprayer = {PIC_SPRAYER, 316, 104, 440, 150};
-static const Button btnO2 = {PIC_O2, 57,100,262,168};
-static const Button btnScrubber = {PIC_SCRUBBER, 57,338,262,406};
-static const Button btnUltrasound = {PIC_ULTRASOUND, 57,181,262,248};
-static const Button btnRF = {PIC_RF, 57,257,262,327};
-static const Button btnIce = {PIC_ICE, 57,419,262,486};
-static const Button btnBIO1 = {PIC_RF, 57,257,262,327};
-static const Button btnTimeUp = {PIC_EFFECT2, 679,223,719,265};
-static const Button btnTimeDown = {PIC_EFFECT2, 537,223,577,265};
-static const Button btnIntensityUp = {PIC_EFFECT2, 679,313,719,354};
-static const Button btnIntensityDown = {PIC_EFFECT2, 537,313,577,354};
-static const Button btnModeUp = {PIC_EFFECT2, 679,405,719,445};
-static const Button btnModeDown = {PIC_EFFECT2, 537,405,577,445};
-static const Button btnStart = {PIC_EFFECT, 686,524,744,581};
-static const Button btnScrubberAdj = {PIC_EFFECT,770,0,799,30};
-static const Button btnScrubberAdjUp = {PIC_EFFECT,172,244,256,325};
-static const Button btnScrubberAdjDown = {PIC_EFFECT,539,243,623,330};
-static const Button btnMin = {PIC_EFFECT,338,367,455,483};
-static const Button btnSet = {PIC_EFFECT, 55, 6, 103, 55};
-static const Button btnChinse = {PIC_LANGUAGE, 193, 228, 319, 343};
-static const Button btnEnglish = {PIC_LANGUAGE, 482, 228, 608, 343};
-static const Button btnTimeUp_Clean = {PIC_EFFECT, 679,310,719,350};
-static const Button btnTimeDown_Clean = {PIC_EFFECT, 537,310,577,350};
-static const Button btnTimeUp_O2 = {PIC_EFFECT3, 679,270,719,309};
-static const Button btnTimeDown_O2 = {PIC_EFFECT3, 537,270,577,309};
-static const Button btnModeUp_O2 = {PIC_EFFECT3, 679,360,719,397};
-static const Button btnModeDown_O2 = {PIC_EFFECT3, 537,360,577,397};
-static const Button btnBottleA = {PIC_EFFECT, 56, 517, 124, 584};
-static const Button btnBottleB = {PIC_EFFECT, 180, 517, 246, 584};
-static const Button btnBottleC = {PIC_EFFECT, 304, 517, 368, 584};
-static const Button btnBottleD = {PIC_EFFECT, 426, 517, 490, 584};
-static const Button btnStandby = {PIC_EFFECT, 129, 7, 172, 52};
-
-//Botton free effect
-static const Button btnTimeUp_O = {PIC_SCRUBBER, 679,223,719,265};
-static const Button btnTimeDown_O = {PIC_SCRUBBER, 537,223,577,265};
-static const Button btnTimeUp_Clean_O = {PIC_CLEAN, 679,310,719,350};
-static const Button btnTimeDown_Clean_O = {PIC_CLEAN, 537,310,577,350};
-static const Button btnTimeUp_O2_O = {PIC_O2, 679,270,719,309};
-static const Button btnTimeDown_O2_O = {PIC_O2, 537,270,577,309};
-static const Button btnIntensityUp_O = {PIC_SCRUBBER, 679,313,719,354};
-static const Button btnIntensityDown_O = {PIC_SCRUBBER, 537,313,577,354};
-static const Button btnModeUp_O = {PIC_SCRUBBER, 679,405,719,445};
-static const Button btnModeDown_O = {PIC_SCRUBBER, 537,405,577,445};
-static const Button btnModeUp_O2_O = {PIC_O2, 679,360,719,397};
-static const Button btnModeDown_O2_O = {PIC_O2, 537,360,577,397};
+//Button
+static const u16 btnEnter = 0X0031;
+static const u16 btnClean = 0X000A;
+static const u16 btnSprayer = 0X0009;
+static const u16 btnO2 = 0X0004;
+static const u16 btnScrubber = 0X0007;
+static const u16 btnUltrasound = 0X0005;
+static const u16 btnRF = 0X0006;
+static const u16 btnIce = 0X0008;
+static const u16 btnBIO1 = 0X0006;
+static const u16 btnTimeUp = 0X000E;
+static const u16 btnTimeDown = 0X000D;
+static const u16 btnIntensityUp = 0X0012;
+static const u16 btnIntensityDown = 0X0011;
+static const u16 btnModeUp = 0X0010;
+static const u16 btnModeDown = 0X000F;
+static const u16 btnStart = 0X0016;
+static const u16 btnScrubberAdj = 0X0021;
+static const u16 btnScrubberAdjUp = 0X0013;
+static const u16 btnScrubberAdjDown = 0X0014;
+static const u16 btnSet = 0X000C;
+static const u16 btnChinse = 0X0002;
+static const u16 btnEnglish = 0X0003;
+static const u16 btnMin = 0X0015;
+static const u16 btnBottleA = 0X0017;
+static const u16 btnBottleB = 0X0018;
+static const u16 btnBottleC = 0X0019;
+static const u16 btnBottleD = 0X001A;
+static const u16 btnStandby = 0X000B;
+static const u16 btnCamBack = 0X0055;
+static const u16 btnCam = 0X0001;
 
 /*language select*/
 static void menuChinsePres(void)
@@ -85,7 +75,7 @@ static void menuChinsePres(void)
 	u16 i = 0;
 	
 	INLINE_MUSIC_BUTTON();
-	dwSetLanguage(LANGUAGE_CHINESE);
+	dwD2SetLanguage(LANGUAGE_CHINESE);
 	
 	nextPage = FUNCTION_MAIN;
 	STMFLASH_Write(FLASH_LANG_ADDR, &i, 1);		//Write language config
@@ -96,7 +86,7 @@ static void menuEnglishPres(void)
 	u16 i = 123;
 	
 	INLINE_MUSIC_BUTTON();
-	dwSetLanguage(LANGUAGE_ENGLISH);
+	dwD2SetLanguage(LANGUAGE_ENGLISH);
 	
 	nextPage = FUNCTION_MAIN;
 	STMFLASH_Write(FLASH_LANG_ADDR, &i, 1);		//Write language config
@@ -104,38 +94,41 @@ static void menuEnglishPres(void)
 
 static void StandbyPres(void)
 {
-	dwDisButton(&btnStandby, 1, btnStandby.xs, btnStandby.ys);	
-}
-
-static void StandbyFree(void)
-{
 	INLINE_MUSIC_STANDBY();
 	nextPage = FUNCTION_RESTART;
-	dwSetBL(0x01);	//change display light
+	dwD2SetBL(0X03, 0X03, 0X02EE);	//change display light
 	PUMP24_PIN = 0;	//Close front LED
+}
+
+static void CamPres(void)
+{
+	INLINE_MUSIC_BUTTON();
+	nextPage = FUNCTION_CAM;
+	GUN_CON_PIN = 0;
+}
+
+static void CamBackPres(void)
+{
+	INLINE_MUSIC_BUTTON();
+	nextPage = FUNCTION_MAIN;
+	GUN_CON_PIN = 1;
 }
 
 static void ScrubberPres(void)
 {
 	INLINE_MUSIC_BUTTON();
-	dwDisButton(&btnScrubber, 1, btnScrubber.xs, btnScrubber.ys);
-	
 	nextPage = FUNCTION_SCRUBBER;
 }
 
 static void O2Pres(void)
 {
 	INLINE_MUSIC_BUTTON();
-	dwDisButton(&btnO2, 1, btnO2.xs, btnO2.ys);
-	
 	nextPage = FUNCTION_O2;
 }
 
 static void RFPres(void)
 {
 	INLINE_MUSIC_BUTTON();
-	dwDisButton(&btnRF, 1, btnRF.xs, btnRF.ys);
-	
 //	nextPage = FUNCTION_RF;
 	nextPage = FUNCTION_BIO1;
 }
@@ -143,8 +136,6 @@ static void RFPres(void)
 static void SetPres(void)
 {
 	INLINE_MUSIC_BUTTON();
-	dwDisButton(&btnSet, 1, btnSet.xs, btnSet.ys);
-	
 	nextPage = FUNCTION_LANGUAGE;
 }
 
@@ -157,40 +148,30 @@ static void ScrubberAdjPres(void)
 static void CleanPres(void)
 {
 	INLINE_MUSIC_BUTTON();
-	dwDisButton(&btnClean, 1, btnClean.xs, btnClean.ys);
-	
 	nextPage = FUNCTION_CLEAN;
 }
 
 static void UltrasoundPres(void)
 {
 	INLINE_MUSIC_BUTTON();
-	dwDisButton(&btnUltrasound, 1, btnUltrasound.xs, btnUltrasound.ys);
-	
 	nextPage = FUNCTION_ULTRASOUND;
 }
 
 static void IcePres(void)
 {
 	INLINE_MUSIC_BUTTON();
-	dwDisButton(&btnIce, 1, btnIce.xs, btnIce.ys);
-	
 	nextPage = FUNCTION_ICE;
 }
 
 static void BIO1Pres(void)
 {
 	INLINE_MUSIC_BUTTON();
-	dwDisButton(&btnBIO1, 1, btnBIO1.xs, btnBIO1.ys);
-	
 	nextPage = FUNCTION_BIO1;	
 }
 
 static void SprayerPres(void)
 {
 	INLINE_MUSIC_BUTTON();
-	dwDisButton(&btnSprayer, 1, btnSprayer.xs, btnSprayer.ys);
-	
 	nextPage = FUNCTION_SPRAYER;
 }
 
@@ -203,8 +184,8 @@ static void IntensityUpPres(void)
 		{
 			if(ScrubberIntensity<4)
 				ScrubberIntensity++;
-			dwDisNum(DW_SIZE_24, 622, 321, ScrubberIntensity);
-			dwDisButton(&btnIntensityUp, 1, btnIntensityUp.xs, btnIntensityUp.ys);
+			
+			dwD2DisNum(NUM_ADDRESS, ScrubberIntensity);
 			ScrubberPWMIntensity = 720000/ScrubberFrequency*ScrubberPWMTable[ScrubberIntensity];
 			TIM_SetCompare1(TIM1,ScrubberPWMIntensity);
 			break;
@@ -214,10 +195,9 @@ static void IntensityUpPres(void)
 			if(ScrubberFrequency<300)
 			{
 				ScrubberFrequency++;
-				dwDisNum(DW_SIZE_48, 319,    260,ScrubberFrequency/100);
-				dwDisNum(DW_SIZE_48, 319+24, 260,ScrubberFrequency/10%10);
-				dwDisChar(DW_SIZE_48,319+48, 260,'.');
-				dwDisNum(DW_SIZE_48, 319+72, 260,ScrubberFrequency%10);				
+
+				dwD2DisFre(FRE_ADDRESS, ScrubberFrequency);		
+
 				TIM_SetAutoreload(TIM1, (u16)(720000/ScrubberFrequency));
 				ScrubberPWMIntensity = 720000/ScrubberFrequency*ScrubberPWMTable[ScrubberIntensity];
 				TIM_SetCompare1(TIM1, ScrubberPWMIntensity);
@@ -228,8 +208,7 @@ static void IntensityUpPres(void)
 		{
 			if(BIO1Intensity<4)
 				BIO1Intensity++;
-			dwDisNum(DW_SIZE_24, 622, 321, BIO1Intensity);
-			dwDisButton(&btnIntensityUp, 1, btnIntensityUp.xs, btnIntensityUp.ys);
+			dwD2DisNum(NUM_ADDRESS, BIO1Intensity);
 			TIM_SetCompare4(TIM4, BIO1IntensityTable[BIO1Intensity]);
 			break;
 		}
@@ -237,32 +216,18 @@ static void IntensityUpPres(void)
 		{
 			if(UltrasoundIntensity<4)
 				UltrasoundIntensity++;
-			dwDisNum(DW_SIZE_24, 622, 321, UltrasoundIntensity);
-			dwDisButton(&btnIntensityUp, 1, btnIntensityUp.xs, btnIntensityUp.ys);
+			dwD2DisNum(NUM_ADDRESS, UltrasoundIntensity);
 			break;
 		}
 		case FUNCTION_RF:
 		{
 			if(RFIntensity<4)
 				RFIntensity++;
-			dwDisNum(DW_SIZE_24, 622, 321, RFIntensity);
-			dwDisButton(&btnIntensityUp, 1, btnIntensityUp.xs, btnIntensityUp.ys);
+			dwD2DisNum(NUM_ADDRESS, RFIntensity);
 			break;
 		}
 		default: {break;}
 	}	
-}
-
-static void IntensityUpFree(void)
-{	
-	switch(nextPage)
-	{
-		case FUNCTION_SCRUBBER: {dwDisButton(&btnIntensityUp_O, 1, btnIntensityUp_O.xs, btnIntensityUp_O.ys); break;}
-		case FUNCTION_ULTRASOUND: {dwDisButton(&btnIntensityUp_O, 1, btnIntensityUp_O.xs, btnIntensityUp_O.ys); break;}
-		case FUNCTION_RF: {dwDisButton(&btnIntensityUp_O, 1, btnIntensityUp_O.xs, btnIntensityUp_O.ys); break;}
-		case FUNCTION_BIO1: {dwDisButton(&btnIntensityUp_O, 1, btnIntensityUp_O.xs, btnIntensityUp_O.ys); break;}
-		default: {break;}
-	}
 }
 
 static void IntensityDownPres(void)
@@ -274,8 +239,8 @@ static void IntensityDownPres(void)
 		{
 			if(ScrubberIntensity>0)
 				ScrubberIntensity--;
-			dwDisNum(DW_SIZE_24, 622, 321, ScrubberIntensity);
-			dwDisButton(&btnIntensityDown, 1, btnIntensityDown.xs, btnIntensityDown.ys);
+			
+			dwD2DisNum(NUM_ADDRESS, ScrubberIntensity);
 			ScrubberPWMIntensity = 720000/ScrubberFrequency*ScrubberPWMTable[ScrubberIntensity];
 			TIM_SetCompare1(TIM1,ScrubberPWMIntensity);
 			break;
@@ -285,10 +250,7 @@ static void IntensityDownPres(void)
 			if(ScrubberFrequency>201)
 			{
 				ScrubberFrequency--;
-				dwDisNum(DW_SIZE_48, 319,    260,ScrubberFrequency/100);
-				dwDisNum(DW_SIZE_48, 319+24, 260,ScrubberFrequency/10%10);
-				dwDisChar(DW_SIZE_48,319+48, 260,'.');
-				dwDisNum(DW_SIZE_48, 319+72, 260,ScrubberFrequency%10);
+				dwD2DisFre(FRE_ADDRESS, ScrubberFrequency);	
 				TIM_SetAutoreload(TIM1, (u16)(720000/ScrubberFrequency));
 				ScrubberPWMIntensity = 720000/ScrubberFrequency*ScrubberPWMTable[ScrubberIntensity];
 				TIM_SetCompare1(TIM1, ScrubberPWMIntensity);
@@ -299,8 +261,7 @@ static void IntensityDownPres(void)
 		{
 			if(BIO1Intensity>0)
 				BIO1Intensity--;
-			dwDisNum(DW_SIZE_24, 622, 321, BIO1Intensity);
-			dwDisButton(&btnIntensityDown, 1, btnIntensityDown.xs, btnIntensityDown.ys);
+			dwD2DisNum(NUM_ADDRESS, BIO1Intensity);
 			TIM_SetCompare4(TIM4, BIO1IntensityTable[BIO1Intensity]);
 			break;
 		}
@@ -308,32 +269,18 @@ static void IntensityDownPres(void)
 		{
 			if(UltrasoundIntensity>0)
 				UltrasoundIntensity--;
-			dwDisNum(DW_SIZE_24, 622, 321, UltrasoundIntensity);
-			dwDisButton(&btnIntensityDown, 1, btnIntensityDown.xs, btnIntensityDown.ys);
+			dwD2DisNum(NUM_ADDRESS, UltrasoundIntensity);
 			break;
 		}
 		case FUNCTION_RF:
 		{
 			if(RFIntensity>0)
 				RFIntensity--;
-			dwDisNum(DW_SIZE_24, 622, 321, RFIntensity);
-			dwDisButton(&btnIntensityDown, 1, btnIntensityDown.xs, btnIntensityDown.ys);
+			dwD2DisNum(NUM_ADDRESS, RFIntensity);
 			break;
 		}
 		default: {break;}
 	}	
-}
-
-static void IntensityDownFree(void)
-{
-	switch(nextPage)
-	{
-		case FUNCTION_SCRUBBER: {dwDisButton(&btnIntensityDown_O, 1, btnIntensityDown_O.xs, btnIntensityDown_O.ys); break;}
-		case FUNCTION_ULTRASOUND: {dwDisButton(&btnIntensityDown_O, 1, btnIntensityDown_O.xs, btnIntensityDown_O.ys); break;}
-		case FUNCTION_RF: {dwDisButton(&btnIntensityDown_O, 1, btnIntensityDown_O.xs, btnIntensityDown_O.ys); break;}
-		case FUNCTION_BIO1: {dwDisButton(&btnIntensityDown_O, 1, btnIntensityDown_O.xs, btnIntensityDown_O.ys); break;}
-		default: {break;}
-	}
 }
 
 static void TimeUpPres(void)
@@ -344,29 +291,8 @@ static void TimeUpPres(void)
 	{
 		WorkTime += 60;
 	}	
-	switch(nextPage)
-	{
-		case FUNCTION_SCRUBBER: {dwDisButton(&btnTimeUp, 1, btnTimeUp.xs, btnTimeUp.ys); DisSetAxis(600, 231); break;}
-		case FUNCTION_ULTRASOUND: {dwDisButton(&btnTimeUp, 1, btnTimeUp.xs, btnTimeUp.ys); DisSetAxis(600, 231); break;}
-		case FUNCTION_RF: {dwDisButton(&btnTimeUp, 1, btnTimeUp.xs, btnTimeUp.ys); DisSetAxis(600, 231); break;}
-		case FUNCTION_BIO1: {dwDisButton(&btnTimeUp, 1, btnTimeUp.xs, btnTimeUp.ys); DisSetAxis(600, 231); break;}
-		case FUNCTION_O2: {dwDisButton(&btnTimeUp_O2, 1, btnTimeUp_O2.xs, btnTimeUp_O2.ys); DisSetAxis(600, 278); break;}
-		default: {dwDisButton(&btnTimeUp_Clean, 1, btnTimeUp_Clean.xs, btnTimeUp_Clean.ys); DisSetAxis(600, 318); break;}
-	}
-	funDisTime(WorkTime);
-}
 
-static void TimeUpFree(void)
-{
-	switch(nextPage)
-	{
-		case FUNCTION_SCRUBBER: {dwDisButton(&btnTimeUp_O, 1, btnTimeUp_O.xs, btnTimeUp_O.ys); break;}
-		case FUNCTION_ULTRASOUND: {dwDisButton(&btnTimeUp_O, 1, btnTimeUp_O.xs, btnTimeUp_O.ys); break;}
-		case FUNCTION_RF: {dwDisButton(&btnTimeUp_O, 1, btnTimeUp_O.xs, btnTimeUp_O.ys); break;}
-		case FUNCTION_BIO1: {dwDisButton(&btnTimeUp_O, 1, btnTimeUp_O.xs, btnTimeUp_O.ys); break;}
-		case FUNCTION_O2: {dwDisButton(&btnTimeUp_O2_O, 1, btnTimeUp_O2_O.xs, btnTimeUp_O2_O.ys); break;}
-		default: {dwDisButton(&btnTimeUp_Clean_O, 1, btnTimeUp_Clean_O.xs, btnTimeUp_Clean_O.ys); break;}
-	}
+	dwD2DisTime(TIME_ADDRESS, WorkTime);
 }
 
 static void TimeDownPres(void)
@@ -377,29 +303,8 @@ static void TimeDownPres(void)
 	{
 		WorkTime -= 60;
 	}
-	switch(nextPage)
-	{
-		case FUNCTION_SCRUBBER: {dwDisButton(&btnTimeDown, 1, btnTimeDown.xs, btnTimeDown.ys); DisSetAxis(600, 231); break;}
-		case FUNCTION_ULTRASOUND: {dwDisButton(&btnTimeDown, 1, btnTimeDown.xs, btnTimeDown.ys); DisSetAxis(600, 231); break;}
-		case FUNCTION_RF: {dwDisButton(&btnTimeDown, 1, btnTimeDown.xs, btnTimeDown.ys); DisSetAxis(600, 231); break;}
-		case FUNCTION_BIO1: {dwDisButton(&btnTimeDown, 1, btnTimeDown.xs, btnTimeDown.ys); DisSetAxis(600, 231); break;}
-		case FUNCTION_O2: {dwDisButton(&btnTimeDown_O2, 1, btnTimeDown_O2.xs, btnTimeDown_O2.ys); DisSetAxis(600, 278); break;}
-		default: {dwDisButton(&btnTimeDown_Clean, 1, btnTimeDown_Clean.xs, btnTimeDown_Clean.ys); DisSetAxis(600, 318); break;}
-	}
-	funDisTime(WorkTime);
-}
 
-static void TimeDownFree(void)
-{
-	switch(nextPage)
-	{
-		case FUNCTION_SCRUBBER: {dwDisButton(&btnTimeDown_O, 1, btnTimeDown_O.xs, btnTimeDown_O.ys); break;}
-		case FUNCTION_ULTRASOUND: {dwDisButton(&btnTimeDown_O, 1, btnTimeDown_O.xs, btnTimeDown_O.ys); break;}
-		case FUNCTION_RF: {dwDisButton(&btnTimeDown_O, 1, btnTimeDown_O.xs, btnTimeDown_O.ys); break;}
-		case FUNCTION_BIO1: {dwDisButton(&btnTimeDown_O, 1, btnTimeDown_O.xs, btnTimeDown_O.ys); break;}
-		case FUNCTION_O2: {dwDisButton(&btnTimeDown_O2_O, 1, btnTimeDown_O2_O.xs, btnTimeDown_O2_O.ys); break;}
-		default: {dwDisButton(&btnTimeDown_Clean_O, 1, btnTimeDown_Clean_O.xs, btnTimeDown_Clean_O.ys); break;}
-	}
+	dwD2DisTime(TIME_ADDRESS, WorkTime);
 }
 
 static void ModeUpPres(void)
@@ -412,85 +317,47 @@ static void ModeUpPres(void)
 		{
 			if(ScrubberMode<2)
 				ScrubberMode++;
-			dwDisChar(DW_SIZE_24, 622, 411, ScrubberMode+'A');
-			dwDisButton(&btnModeUp, 1, btnModeUp.xs, btnModeUp.ys);
+			
+			dwD2DisChar(MODE_ADDRESS, ScrubberMode);
 			break;
 		}
 		case FUNCTION_BIO1: 
 		{
 			if(BIO1Mode<2)
 				BIO1Mode++;
-			dwDisChar(DW_SIZE_24, 622, 411, BIO1Mode+'A');
-			dwDisButton(&btnModeUp, 1, btnModeUp.xs, btnModeUp.ys);
+			dwD2DisChar(MODE_ADDRESS, BIO1Mode);
 			break;
 		}
 		case FUNCTION_ULTRASOUND: 
 		{
 			if(UltrasoundMode<2)
 				UltrasoundMode++;
-			dwDisChar(DW_SIZE_24, 622, 411, UltrasoundMode+'A');
-			dwDisButton(&btnModeUp, 1, btnModeUp.xs, btnModeUp.ys);
+			dwD2DisChar(MODE_ADDRESS, UltrasoundMode);
 			break;
 		}
 		case FUNCTION_RF: 
 		{
 			if(RFMode<2)
 				RFMode++;
-			dwDisChar(DW_SIZE_24, 622, 411, RFMode+'A');
-			dwDisButton(&btnModeUp, 1, btnModeUp.xs, btnModeUp.ys);
+			dwD2DisChar(MODE_ADDRESS, RFMode);
 			break;
 		}
 		case FUNCTION_ICE: 
 		{
 			if(ColdMode<1)
 				ColdMode++;
-			dwDisChar(DW_SIZE_24, 550, 253, ColdMode+'A');
+			dwD2DisChar(MODE_ADDRESS, ColdMode);
 			break;
 		}
 		case FUNCTION_O2: 
 		{
-			if(O2Mode<3)
+			if(O2Mode<4)
 				O2Mode++;
-			dwDisChar(DW_SIZE_24, 622, 364, O2Mode+'A');
-			dwDisButton(&btnModeUp_O2, 1, btnModeUp_O2.xs, btnModeUp_O2.ys);
-			break;
-		}
-		default: {break;}
-	}
-}
 
-static void ModeUpFree(void)
-{
-	switch(nextPage)
-	{
-		case FUNCTION_SCRUBBER: 
-		{
-			dwDisButton(&btnModeUp_O, 1, btnModeUp_O.xs, btnModeUp_O.ys);
-			break;
-		}
-		case FUNCTION_BIO1: 
-		{
-			dwDisButton(&btnModeUp_O, 1, btnModeUp_O.xs, btnModeUp_O.ys);
-			break;
-		}
-		case FUNCTION_ULTRASOUND: 
-		{
-			dwDisButton(&btnModeUp_O, 1, btnModeUp_O.xs, btnModeUp_O.ys);
-			break;
-		}
-		case FUNCTION_RF: 
-		{
-			dwDisButton(&btnModeUp_O, 1, btnModeUp_O.xs, btnModeUp_O.ys);
-			break;
-		}
-		case FUNCTION_ICE: 
-		{
-			dwDisButton(&btnModeUp_O2_O, 1, btnModeUp_O2_O.xs, btnModeUp_O2_O.ys);
-			break;
-		}
-		case FUNCTION_O2: 
-		{
-			dwDisButton(&btnModeUp_O2_O, 1, btnModeUp_O2_O.xs, btnModeUp_O2_O.ys);
+			if (O2Mode == 0)
+				dwD2DisChar(MODE_ADDRESS, 61);
+			else
+				dwD2DisChar(MODE_ADDRESS, O2Mode-1);
 			break;
 		}
 		default: {break;}
@@ -507,85 +374,46 @@ static void ModeDownPres(void)
 		{
 			if(ScrubberMode>0)
 				ScrubberMode--;
-			dwDisChar(DW_SIZE_24, 622, 411, ScrubberMode+'A');
-			dwDisButton(&btnModeDown, 1, btnModeDown.xs, btnModeDown.ys);
+			dwD2DisChar(MODE_ADDRESS, ScrubberMode);
 			break;
 		}
 		case FUNCTION_BIO1: 
 		{
 			if(BIO1Mode>0)
 				BIO1Mode--;
-			dwDisChar(DW_SIZE_24, 622, 411, BIO1Mode+'A');
-			dwDisButton(&btnModeDown, 1, btnModeDown.xs, btnModeDown.ys);
+			dwD2DisChar(MODE_ADDRESS, BIO1Mode);
 			break;
 		}
 		case FUNCTION_ULTRASOUND: 
 		{
 			if(UltrasoundMode>0)
 				UltrasoundMode--;
-			dwDisChar(DW_SIZE_24, 622, 411, UltrasoundMode+'A');
-			dwDisButton(&btnModeDown, 1, btnModeDown.xs, btnModeDown.ys);
+			dwD2DisChar(MODE_ADDRESS, UltrasoundMode);
 			break;
 		}
 		case FUNCTION_RF: 
 		{
 			if(RFMode>0)
 				RFMode--;
-			dwDisChar(DW_SIZE_24, 622, 411, RFMode+'A');
-			dwDisButton(&btnModeDown, 1, btnModeDown.xs, btnModeDown.ys);
+			dwD2DisChar(MODE_ADDRESS, RFMode);
 			break;
 		}
 		case FUNCTION_ICE: 
 		{
 			if(ColdMode>0)
 				ColdMode--;
-			dwDisChar(DW_SIZE_24, 550, 253, ColdMode+'A');
+			dwD2DisChar(MODE_ADDRESS, ColdMode);
 			break;
 		}
 		case FUNCTION_O2: 
 		{
 			if(O2Mode>0)
 				O2Mode--;
-			dwDisChar(DW_SIZE_24, 622, 364, O2Mode+'A');
-			dwDisButton(&btnModeDown_O2, 1, btnModeDown_O2.xs, btnModeDown_O2.ys);
-			break;
-		}
-		default: {break;}
-	}
-}
 
-static void ModeDownFree(void)
-{
-	switch(nextPage)
-	{
-		case FUNCTION_SCRUBBER: 
-		{
-			dwDisButton(&btnModeDown_O, 1, btnModeDown_O.xs, btnModeDown_O.ys);
-			break;
-		}
-		case FUNCTION_BIO1: 
-		{
-			dwDisButton(&btnModeDown_O, 1, btnModeDown_O.xs, btnModeDown_O.ys);
-			break;
-		}
-		case FUNCTION_ULTRASOUND: 
-		{
-			dwDisButton(&btnModeDown_O, 1, btnModeDown_O.xs, btnModeDown_O.ys);
-			break;
-		}
-		case FUNCTION_RF: 
-		{
-			dwDisButton(&btnModeDown_O, 1, btnModeDown_O.xs, btnModeDown_O.ys);
-			break;
-		}
-		case FUNCTION_ICE: 
-		{
-			dwDisButton(&btnModeDown_O2_O, 1, btnModeDown_O2_O.xs, btnModeDown_O2_O.ys);
-			break;
-		}
-		case FUNCTION_O2: 
-		{
-			dwDisButton(&btnModeDown_O2_O, 1, btnModeDown_O2_O.xs, btnModeDown_O2_O.ys);
+			if (O2Mode == 0)
+				dwD2DisChar(MODE_ADDRESS, 61);
+			else
+				dwD2DisChar(MODE_ADDRESS, O2Mode-1);
 			break;
 		}
 		default: {break;}
@@ -601,12 +429,12 @@ static void StartPres(void)
 			if(ScrubberWorkFlag)
 			{				
 				ScrubberWorkFlag = 0;
-				dwCutPic(PIC_SCRUBBER, btnStart.xs, btnStart.ys, btnStart.xe, btnStart.ye, btnStart.xs, btnStart.ys);
+				dwD2DisICO(START_ADDRESS, ScrubberWorkFlag);
 			}
 			else
 			{
 				ScrubberWorkFlag = 1;
-				dwCutPic(PIC_EFFECT, btnStart.xs, btnStart.ys, btnStart.xe, btnStart.ye, btnStart.xs, btnStart.ys);
+				dwD2DisICO(START_ADDRESS, ScrubberWorkFlag);
 			}
 			break;
 		}
@@ -616,13 +444,13 @@ static void StartPres(void)
 			{						
 				BIO1WorkFlag = 0;
 				RF_CON_PIN = 1;
-				dwCutPic(PIC_SCRUBBER, btnStart.xs, btnStart.ys, btnStart.xe, btnStart.ye, btnStart.xs, btnStart.ys);
+				dwD2DisICO(START_ADDRESS, BIO1WorkFlag);
 			}
 			else
 			{
 				BIO1WorkFlag = 1;
 				RF_CON_PIN = 0;
-				dwCutPic(PIC_EFFECT, btnStart.xs, btnStart.ys, btnStart.xe, btnStart.ye, btnStart.xs, btnStart.ys);
+				dwD2DisICO(START_ADDRESS, BIO1WorkFlag);
 			}
 			break;
 		}
@@ -632,13 +460,13 @@ static void StartPres(void)
 			{				
 				UltrasoundWorkFlag = 0;
 				ULT_CON_PIN = 1;
-				dwCutPic(PIC_SCRUBBER, btnStart.xs, btnStart.ys, btnStart.xe, btnStart.ye, btnStart.xs, btnStart.ys);
+				dwD2DisICO(START_ADDRESS, UltrasoundWorkFlag);
 			}
 			else
 			{
 				UltrasoundWorkFlag = 1;
 				ULT_CON_PIN = 0;
-				dwCutPic(PIC_EFFECT, btnStart.xs, btnStart.ys, btnStart.xe, btnStart.ye, btnStart.xs, btnStart.ys);
+				dwD2DisICO(START_ADDRESS, UltrasoundWorkFlag);
 			}
 			break;
 		}
@@ -648,13 +476,13 @@ static void StartPres(void)
 			{				
 				RFWorkFlag = 0;
 				RF_CON_PIN = 1;
-				dwCutPic(PIC_SCRUBBER, btnStart.xs, btnStart.ys, btnStart.xe, btnStart.ye, btnStart.xs, btnStart.ys);
+				dwD2DisICO(START_ADDRESS, RFWorkFlag);
 			}
 			else
 			{
 				RFWorkFlag = 1;
 				RF_CON_PIN = 0;
-				dwCutPic(PIC_EFFECT, btnStart.xs, btnStart.ys, btnStart.xe, btnStart.ye, btnStart.xs, btnStart.ys);
+				dwD2DisICO(START_ADDRESS, RFWorkFlag);
 			}
 			break;
 		}
@@ -664,13 +492,13 @@ static void StartPres(void)
 			{				
 				ColdWorkFlag = 0;
 				COLD_CON_PIN = 1;
-				dwCutPic(PIC_SCRUBBER, btnStart.xs, btnStart.ys, btnStart.xe, btnStart.ye, btnStart.xs, btnStart.ys);
+				dwD2DisICO(START_ADDRESS, ColdWorkFlag);
 			}
 			else
 			{
 				ColdWorkFlag = 1;
 				COLD_CON_PIN = 0;
-				dwCutPic(PIC_EFFECT, btnStart.xs, btnStart.ys, btnStart.xe, btnStart.ye, btnStart.xs, btnStart.ys);
+				dwD2DisICO(START_ADDRESS, ColdWorkFlag);
 			}
 			break;
 		}
@@ -679,12 +507,12 @@ static void StartPres(void)
 			if(O2WorkFlag)
 			{				
 				O2WorkFlag = 0;
-				dwCutPic(PIC_SCRUBBER, btnStart.xs, btnStart.ys, btnStart.xe, btnStart.ye, btnStart.xs, btnStart.ys);
+				dwD2DisICO(START_ADDRESS, O2WorkFlag);
 			}
 			else
 			{
 				O2WorkFlag = 1;
-				dwCutPic(PIC_EFFECT, btnStart.xs, btnStart.ys, btnStart.xe, btnStart.ye, btnStart.xs, btnStart.ys);
+				dwD2DisICO(START_ADDRESS, O2WorkFlag);
 			}
 			break;
 		}
@@ -694,13 +522,13 @@ static void StartPres(void)
 			{				
 				CleanWorkFlag = 0;
 				PEN_CON_PIN = 1;
-				dwCutPic(PIC_SCRUBBER, btnStart.xs, btnStart.ys, btnStart.xe, btnStart.ye, btnStart.xs, btnStart.ys);
+				dwD2DisICO(START_ADDRESS, CleanWorkFlag);
 			}
 			else
 			{
 				CleanWorkFlag = 1;
 				PEN_CON_PIN = 0;
-				dwCutPic(PIC_EFFECT, btnStart.xs, btnStart.ys, btnStart.xe, btnStart.ye, btnStart.xs, btnStart.ys);
+				dwD2DisICO(START_ADDRESS, CleanWorkFlag);
 			}
 			break;
 		}
@@ -709,14 +537,14 @@ static void StartPres(void)
 			if(SprayerWorkFlag)
 			{				
 				SprayerWorkFlag = 0;
-				GUN_CON_PIN = 1;
-				dwCutPic(PIC_SCRUBBER, btnStart.xs, btnStart.ys, btnStart.xe, btnStart.ye, btnStart.xs, btnStart.ys);
+				// GUN_CON_PIN = 1;
+				dwD2DisICO(START_ADDRESS, SprayerWorkFlag);
 			}
 			else
 			{
 				SprayerWorkFlag = 1;
-				GUN_CON_PIN = 0;
-				dwCutPic(PIC_EFFECT, btnStart.xs, btnStart.ys, btnStart.xe, btnStart.ye, btnStart.xs, btnStart.ys);
+				// GUN_CON_PIN = 0;
+				dwD2DisICO(START_ADDRESS, SprayerWorkFlag);
 			}
 			break;
 		}
@@ -730,7 +558,7 @@ static void StartPres(void)
 			UltrasoundWorkFlag = 0; 
 			ColdWorkFlag = 0;
 			SprayerWorkFlag = 0;
-			dwCutPic(PIC_SCRUBBER, btnStart.xs, btnStart.ys, btnStart.xe, btnStart.ye, btnStart.xs, btnStart.ys);	//start button dis
+			dwD2DisICO(START_ADDRESS, 0);
 			break;
 		}
 	}
@@ -746,8 +574,8 @@ static void EnterPres(void)
 	menuExit = 1;
 	nextPage = FUNCTION_MAIN;
 	INLINE_MUSIC_REDAY();
-	dwDisButton(&btnEnter, 0, btnEnter.xs, btnEnter.ys);
-	dwSetBL(0x40);	//change display light
+	dwD2DisPicNoL(PIC_START_ANIMATION);
+	dwD2SetBL(0X64, 0X32, 0X09C4);	//change display light
 	PUMP24_PIN = 1;
 }
 
@@ -760,37 +588,29 @@ static void MinPres(void)
 static void BottleASelect(void)
 {
 	INLINE_MUSIC_BUTTON();
-	dwCutPic(PIC_CLEAN, 56, 517, 490, 584, 56, 517);
-	dwDisButton(&btnBottleA, 1, btnBottleA.xs, btnBottleA.ys);	
-	
-	CleanMode = 1;
+	CleanMode = 0;
+	dwD2DisICO(BOTTLE_ADDRESS, CleanMode);
 }
 
 static void BottleBSelect(void)
 {
 	INLINE_MUSIC_BUTTON();
-	dwCutPic(PIC_CLEAN, 56, 517, 490, 584, 56, 517);
-	dwDisButton(&btnBottleB, 1, btnBottleB.xs, btnBottleB.ys);
-	
-	CleanMode = 2;	
+	CleanMode = 1;
+	dwD2DisICO(BOTTLE_ADDRESS, CleanMode);
 }
 
 static void BottleCSelect(void)
 {
 	INLINE_MUSIC_BUTTON();
-	dwCutPic(PIC_CLEAN, 56, 517, 490, 584, 56, 517);
-	dwDisButton(&btnBottleC, 1, btnBottleC.xs, btnBottleC.ys);	
-	
-	CleanMode = 3;
+	CleanMode = 2;
+	dwD2DisICO(BOTTLE_ADDRESS, CleanMode);
 }
 
 static void BottleDSelect(void)
 {
 	INLINE_MUSIC_BUTTON();
-	dwCutPic(PIC_CLEAN, 56, 517, 490, 584, 56, 517);
-	dwDisButton(&btnBottleD, 1, btnBottleD.xs, btnBottleD.ys);
-	
-	CleanMode = 4;	
+	CleanMode = 3;
+	dwD2DisICO(BOTTLE_ADDRESS, CleanMode);
 }
 
 void WorkTimeDeal(void)
@@ -820,16 +640,7 @@ void WorkTimeDeal(void)
 //				SprayerWorkFlag = 0;
 //				dwCutPic(PIC_SCRUBBER, btnStart.xs, btnStart.ys, btnStart.xe, btnStart.ye, btnStart.xs, btnStart.ys);	//start button dis
 			}
-			switch(nextPage)
-			{
-				case FUNCTION_SCRUBBER: {DisSetAxis(600, 231); break;}
-				case FUNCTION_ULTRASOUND: {DisSetAxis(600, 231); break;}
-				case FUNCTION_RF: {DisSetAxis(600, 231); break;}
-				case FUNCTION_BIO1: {DisSetAxis(600, 231); break;}
-				case FUNCTION_O2: {DisSetAxis(600, 278); break;}
-				default: {DisSetAxis(600, 318); break;}
-			}
-			funDisTime(WorkTime);
+			dwD2DisTime(TIME_ADDRESS, WorkTime);
 		}
 	}
 }
@@ -915,18 +726,15 @@ void PageRestartAnimation(void)
 		INLINE_MUSIC_ERROR()
 	}
 	
-	dwDisPicNoL(0);
 	menuExit = 0;
-	dwCancelKey();
-	dwListenKey(EnterPres, 0, &btnEnter);
-
+	dwD2DisPicNoL(0);
+	dwD2CancelKey();
+	dwD2ListenKey(EnterPres, btnEnter);
 	while(!menuExit)
 	{
-		dwHandler();
+		dwD2Handler();
 	}
 	
-	dwWaitRelease();
-	dwHandler();
 	delay_ms(300);
 }
 ////////////////////////////////
@@ -936,21 +744,19 @@ void PageLanguage(void)
 {
 	menuExit = 0;
 	
-	dwDisPicNoL(PIC_LANGUAGE);
-	dwCancelKey();
-	dwListenKey(menuChinsePres,  0, &btnChinse);
-	dwListenKey(menuEnglishPres, 0, &btnEnglish);
+	dwD2DisPicNoL(PIC_LANGUAGE);
+	dwD2CancelKey();
+	dwD2ListenKey(menuChinsePres, btnChinse);
+	dwD2ListenKey(menuEnglishPres, btnEnglish);
 
 	while(!menuExit)
 	{
-		dwHandler();
+		dwD2Handler();
 		if(nextPage!=FUNCTION_LANGUAGE)
 		{
 			menuExit = 1;
 		}
 	}
-	dwWaitRelease();
-	dwHandler();	
 }
 //////////////////////////////
 
@@ -958,44 +764,39 @@ void PageLanguage(void)
 void PageMain(void)
 {
 	menuExit = 0;
-	dwDisPicWithL(PIC_MAIN);
+	dwD2DisPicWithL(PIC_MAIN);
 	
-	dwCancelKey();
-//	dwListenKey(BIO1Pres, 0, &btnBIO1);
-	dwListenKey(ScrubberPres, 0, &btnScrubber);
-	dwListenKey(UltrasoundPres, 0, &btnUltrasound);
-	dwListenKey(RFPres, 0, &btnRF);
-	dwListenKey(O2Pres, 0, &btnO2);
-	dwListenKey(CleanPres, 0, &btnClean);
-	dwListenKey(IcePres, 0, &btnIce);
-	dwListenKey(SprayerPres, 0, &btnSprayer);
-	dwListenKey(SetPres, 0, &btnSet);
-	dwListenKey(StandbyPres, StandbyFree, &btnStandby);	//Standby
+	dwD2CancelKey();
+//	dwD2ListenKey(BIO1Pres, btnBIO1);
+	dwD2ListenKey(ScrubberPres, btnScrubber);
+	dwD2ListenKey(UltrasoundPres, btnUltrasound);
+	dwD2ListenKey(RFPres, btnRF);
+	dwD2ListenKey(O2Pres, btnO2);
+	dwD2ListenKey(CleanPres, btnClean);
+	dwD2ListenKey(IcePres, btnIce);
+	dwD2ListenKey(SprayerPres, btnSprayer);
+	dwD2ListenKey(CamPres, btnCam);
+	dwD2ListenKey(SetPres, btnSet);
+	dwD2ListenKey(StandbyPres, btnStandby);	//Standby
 	
 	while(!menuExit)
 	{
-		dwHandler();
+		dwD2Handler();
 		if(nextPage!=FUNCTION_MAIN)
 		{
 			menuExit = 1;
 		}
 	}
-	
-	dwWaitRelease();
-	dwHandler();
 }
 ///////////////////////////////
 
 //Scrubber function
 void PageScrubber(void)
 {	
-	dwDisPicWithL(PIC_SCRUBBER);
-	DisTextSize(DW_SIZE_24);
-	DisSetAxis(600, 231);
-	funDisTime(WorkTime);
-	DisSetAxis(622, 321);
-	DisNumber(ScrubberIntensity, 1, 0, Dis_Dec);
-	dwDisChar(DW_SIZE_24, 622, 411, ScrubberMode+'A');	
+	dwD2DisPicWithL(PIC_SCRUBBER);
+	dwD2DisTime(TIME_ADDRESS, WorkTime);
+	dwD2DisNum(NUM_ADDRESS, ScrubberIntensity);
+	dwD2DisChar(MODE_ADDRESS, ScrubberMode);
 	
 	TIM_SetAutoreload(TIM1, (u16)(720000/ScrubberFrequency));
 	ScrubberPWMIntensity = 720000/ScrubberFrequency*ScrubberPWMTable[ScrubberIntensity];
@@ -1004,30 +805,30 @@ void PageScrubber(void)
 	menuExit = 0;
 	WorkTime = 1800;
 	
-	dwCancelKey();
-//	dwListenKey(BIO1Pres, 0, &btnBIO1);
-	dwListenKey(ScrubberPres, 0, &btnScrubber);
-	dwListenKey(UltrasoundPres, 0, &btnUltrasound);
-	dwListenKey(RFPres, 0, &btnRF);
-	dwListenKey(O2Pres, 0, &btnO2);
-	dwListenKey(CleanPres, 0, &btnClean);
-	dwListenKey(IcePres, 0, &btnIce);
-	dwListenKey(SprayerPres, 0, &btnSprayer);
-	dwListenKey(SetPres, 0, &btnSet);
-	dwListenKey(TimeUpPres, TimeUpFree, &btnTimeUp);
-	dwListenKey(TimeDownPres, TimeDownFree, &btnTimeDown);
-	dwListenKey(IntensityUpPres, IntensityUpFree, &btnIntensityUp);
-	dwListenKey(IntensityDownPres, IntensityDownFree, &btnIntensityDown);
-	dwListenKey(ModeUpPres, ModeUpFree, &btnModeUp);
-	dwListenKey(ModeDownPres, ModeDownFree, &btnModeDown);
-	dwListenKey(StartPres, 0, &btnStart);
-//	dwListenKey(MinPres, 0, &btnMin);
-	dwListenKey(ScrubberAdjPres, 0, &btnScrubberAdj);
-	dwListenKey(StandbyPres, StandbyFree, &btnStandby);	//Standby
-	
+	dwD2CancelKey();
+//	dwD2ListenKey(BIO1Pres, btnBIO1);
+	dwD2ListenKey(ScrubberPres, btnScrubber);
+	dwD2ListenKey(UltrasoundPres, btnUltrasound);
+	dwD2ListenKey(RFPres, btnRF);
+	dwD2ListenKey(O2Pres, btnO2);
+	dwD2ListenKey(CleanPres, btnClean);
+	dwD2ListenKey(IcePres, btnIce);
+	dwD2ListenKey(SprayerPres, btnSprayer);
+	dwD2ListenKey(CamPres, btnCam);
+	dwD2ListenKey(SetPres, btnSet);
+	dwD2ListenKey(ScrubberAdjPres, btnScrubberAdj);
+	dwD2ListenKey(StandbyPres, btnStandby);	//Standby
+	dwD2ListenKey(TimeUpPres, btnTimeUp);
+	dwD2ListenKey(TimeDownPres, btnTimeDown);
+	dwD2ListenKey(IntensityUpPres, btnIntensityUp);
+	dwD2ListenKey(IntensityDownPres, btnIntensityDown);
+	dwD2ListenKey(ModeUpPres, btnModeUp);
+	dwD2ListenKey(ModeDownPres, btnModeDown);
+	dwD2ListenKey(StartPres, btnStart);
+
 	while(!menuExit)
 	{
-		dwHandler();
+		dwD2Handler();
 		
 		if(BIT_GET(KeyScan(), 5))
 		{
@@ -1046,14 +847,11 @@ void PageScrubber(void)
 				ScrubberIntensity = 0;
 				ScrubberMode = 0;
 				ScrubberWorkFlag = 0;
+				dwD2DisICO(START_ADDRESS, 0);
 			}
 		}
 		WorkTimeDeal();		
 	}
-	
-	ULT_CON_PIN = 1;
-	dwWaitRelease();
-	dwHandler();
 }
 
 //ScrubberPWM
@@ -1121,24 +919,21 @@ void PageScrubberAdj(void)
 		STMFLASH_Write(FLASH_FREQ_ADDR, &ScrubberFrequency, 1);
 	}	
 	
-	dwDisPicWithL(PIC_SCRUBBER_ADJ);	
-	dwDisNum(DW_SIZE_48, 319,    260,ScrubberFrequency/100);
-	dwDisNum(DW_SIZE_48, 319+24, 260,ScrubberFrequency/10%10);
-	dwDisChar(DW_SIZE_48,319+48, 260,'.');
-	dwDisNum(DW_SIZE_48, 319+72, 260,ScrubberFrequency%10);
+	dwD2DisPicWithL(PIC_SCRUBBER_ADJ);	
+	dwD2DisFre(FRE_ADDRESS, ScrubberFrequency);
 	
 	TIM_SetAutoreload(TIM1, (u16)(720000/ScrubberFrequency));
 	ScrubberPWMIntensity = 720000/ScrubberFrequency*ScrubberPWMTable[ScrubberIntensity];
 	TIM_SetCompare1(TIM1,ScrubberPWMIntensity);	
 
-	dwCancelKey();
-	dwListenKey(MinPres, 0, &btnMin);
-	dwListenKey(IntensityUpPres, 0, &btnScrubberAdjUp);
-	dwListenKey(IntensityDownPres, 0, &btnScrubberAdjDown);	
+	dwD2CancelKey();
+	dwD2ListenKey(MinPres, btnMin);
+	dwD2ListenKey(IntensityUpPres, btnScrubberAdjUp);
+	dwD2ListenKey(IntensityDownPres, btnScrubberAdjDown);	
 	
 	while(!menuExit)
 	{
-		dwHandler();
+		dwD2Handler();
 		if(nextPage!=FUNCTION_SCRUBBER_ADJ)
 		{
 			menuExit = 1;
@@ -1149,9 +944,6 @@ void PageScrubberAdj(void)
 			TouchKey = 0;
 		}
 	}
-	
-	dwWaitRelease();
-	dwHandler();
 }
 /////////////////////////////////
 
@@ -1162,37 +954,34 @@ void PageUltrasound(void)
 	
 	menuExit = 0;
 	WorkTime = 1800;
-	dwDisPicWithL(PIC_ULTRASOUND);
-	DisTextSize(DW_SIZE_24);
-	DisSetAxis(600, 231);
-	funDisTime(WorkTime);
-	DisSetAxis(622, 321);
-	DisNumber(UltrasoundIntensity, 1, 0, Dis_Dec);
-	dwDisChar(DW_SIZE_24, 622, 411, UltrasoundMode+'A');	
+	dwD2DisPicWithL(PIC_ULTRASOUND);
+	dwD2DisTime(TIME_ADDRESS, WorkTime);
+	dwD2DisNum(NUM_ADDRESS, UltrasoundIntensity);
+	dwD2DisChar(MODE_ADDRESS, UltrasoundMode);
 	
-	dwCancelKey();
-//	dwListenKey(BIO1Pres, 0, &btnBIO1);
-	dwListenKey(ScrubberPres, 0, &btnScrubber);
-	dwListenKey(UltrasoundPres, 0, &btnUltrasound);
-	dwListenKey(RFPres, 0, &btnRF);
-	dwListenKey(O2Pres, 0, &btnO2);
-	dwListenKey(CleanPres, 0, &btnClean);
-	dwListenKey(IcePres, 0, &btnIce);
-	dwListenKey(SprayerPres, 0, &btnSprayer);
-	dwListenKey(SetPres, 0, &btnSet);
-	dwListenKey(TimeUpPres, TimeUpFree, &btnTimeUp);
-	dwListenKey(TimeDownPres, TimeDownFree, &btnTimeDown);
-	dwListenKey(IntensityUpPres, IntensityUpFree, &btnIntensityUp);
-	dwListenKey(IntensityDownPres, IntensityDownFree, &btnIntensityDown);
-	dwListenKey(ModeUpPres, ModeUpFree, &btnModeUp);
-	dwListenKey(ModeDownPres, ModeDownFree, &btnModeDown);
-	dwListenKey(StartPres, 0, &btnStart);
-//	dwListenKey(MinPres, 0, &btnMin);
-	dwListenKey(StandbyPres, StandbyFree, &btnStandby);	//Standby
+	dwD2CancelKey();
+//	dwD2ListenKey(BIO1Pres, btnBIO1);
+	dwD2ListenKey(ScrubberPres, btnScrubber);
+	dwD2ListenKey(UltrasoundPres, btnUltrasound);
+	dwD2ListenKey(RFPres, btnRF);
+	dwD2ListenKey(O2Pres, btnO2);
+	dwD2ListenKey(CleanPres, btnClean);
+	dwD2ListenKey(IcePres, btnIce);
+	dwD2ListenKey(SprayerPres, btnSprayer);
+	dwD2ListenKey(CamPres, btnCam);
+	dwD2ListenKey(SetPres, btnSet);
+	dwD2ListenKey(StandbyPres, btnStandby);	//Standby
+	dwD2ListenKey(TimeUpPres, btnTimeUp);
+	dwD2ListenKey(TimeDownPres, btnTimeDown);
+	dwD2ListenKey(IntensityUpPres, btnIntensityUp);
+	dwD2ListenKey(IntensityDownPres, btnIntensityDown);
+	dwD2ListenKey(ModeUpPres, btnModeUp);
+	dwD2ListenKey(ModeDownPres, btnModeDown);
+	dwD2ListenKey(StartPres, btnStart);
 	
 	while(!menuExit)
 	{
-		dwHandler();
+		dwD2Handler();
 		if(BIT_GET(KeyScan(), 2))
 		{
 			if(keyTemp==0)
@@ -1213,13 +1002,13 @@ void PageUltrasound(void)
 				UltrasoundIntensity = 0;
 				UltrasoundMode = 0;
 				UltrasoundWorkFlag = 0;
+				dwD2DisICO(START_ADDRESS, 0);
 			}
 		}
 		WorkTimeDeal();		
 	}
 	
-	dwWaitRelease();
-	dwHandler();
+	ULT_CON_PIN = 1;
 }
 
 //UltrasoundPWM
@@ -1268,6 +1057,25 @@ void UltrasoundPWM(u8 i, u8 Work)
 }
 //////////////////////////////////////////////////
 
+//Camera function
+void PageCAM(void)
+{
+	menuExit = 0;
+	
+	dwD2CancelKey();
+	dwD2ListenKey(CamBackPres, btnCamBack);
+
+	while(!menuExit)
+	{
+		dwD2Handler();
+		if(nextPage!=FUNCTION_CAM)
+		{
+			menuExit = 1;
+		}
+	}
+}
+/////////////////////////////////////////////////
+
 //RF function
 u8 rfKeyTemp = 0;
 void PageRF(void)
@@ -1277,37 +1085,34 @@ void PageRF(void)
 	
 	menuExit = 0;
 	WorkTime = 1800;
-	dwDisPicWithL(PIC_RF);
-	DisTextSize(DW_SIZE_24);
-	DisSetAxis(600, 231);
-	funDisTime(WorkTime);
-	DisSetAxis(622, 321);
-	DisNumber(RFIntensity, 1, 0, Dis_Dec);
-	dwDisChar(DW_SIZE_24, 622, 411, RFMode+'A');	
+	dwD2DisPicWithL(PIC_RF);
+	dwD2DisTime(TIME_ADDRESS, WorkTime);
+	dwD2DisNum(NUM_ADDRESS, RFIntensity);
+	dwD2DisChar(MODE_ADDRESS, RFMode);	
 	
-	dwCancelKey();
-//	dwListenKey(BIO1Pres, 0, &btnBIO1);
-	dwListenKey(ScrubberPres, 0, &btnScrubber);
-	dwListenKey(UltrasoundPres, 0, &btnUltrasound);
-	dwListenKey(RFPres, 0, &btnRF);
-	dwListenKey(O2Pres, 0, &btnO2);
-	dwListenKey(CleanPres, 0, &btnClean);
-	dwListenKey(IcePres, 0, &btnIce);
-	dwListenKey(SprayerPres, 0, &btnSprayer);
-	dwListenKey(SetPres, 0, &btnSet);
-	dwListenKey(TimeUpPres, TimeUpFree, &btnTimeUp);
-	dwListenKey(TimeDownPres, TimeDownFree, &btnTimeDown);
-	dwListenKey(IntensityUpPres, IntensityUpFree, &btnIntensityUp);
-	dwListenKey(IntensityDownPres, IntensityDownFree, &btnIntensityDown);
-	dwListenKey(ModeUpPres, ModeUpFree, &btnModeUp);
-	dwListenKey(ModeDownPres, ModeDownFree, &btnModeDown);
-	dwListenKey(StartPres, 0, &btnStart);
-//	dwListenKey(MinPres, 0, &btnMin);
-	dwListenKey(StandbyPres, StandbyFree, &btnStandby);	//Standby
+	dwD2CancelKey();
+//	dwD2ListenKey(BIO1Pres, btnBIO1);
+	dwD2ListenKey(ScrubberPres, btnScrubber);
+	dwD2ListenKey(UltrasoundPres, btnUltrasound);
+	dwD2ListenKey(RFPres, btnRF);
+	dwD2ListenKey(O2Pres, btnO2);
+	dwD2ListenKey(CleanPres, btnClean);
+	dwD2ListenKey(IcePres, btnIce);
+	dwD2ListenKey(SprayerPres, btnSprayer);
+	dwD2ListenKey(CamPres, btnCam);
+	dwD2ListenKey(SetPres, btnSet);
+	dwD2ListenKey(StandbyPres, btnStandby);	//Standby
+	dwD2ListenKey(TimeUpPres, btnTimeUp);
+	dwD2ListenKey(TimeDownPres, btnTimeDown);
+	dwD2ListenKey(IntensityUpPres, btnIntensityUp);
+	dwD2ListenKey(IntensityDownPres, btnIntensityDown);
+	dwD2ListenKey(ModeUpPres, btnModeUp);
+	dwD2ListenKey(ModeDownPres, btnModeDown);
+	dwD2ListenKey(StartPres, btnStart);
 	
 	while(!menuExit)
 	{
-		dwHandler();
+		dwD2Handler();
 //		if(RFWorkFlag!=1)
 		{
 			if(BIT_GET(KeyScan(), 1))
@@ -1346,14 +1151,13 @@ void PageRF(void)
 				RFIntensity = 0;
 				RFMode = 0;
 				RFWorkFlag = 0;
+				dwD2DisICO(START_ADDRESS, 0);
 			}
 		}
 		WorkTimeDeal();		
 	}
 	
 	RF_CON_PIN = 1;
-	dwWaitRelease();
-	dwHandler();
 }
 
 //RF PWM contral
@@ -1417,30 +1221,28 @@ void PageIce(void)
 	
 	menuExit = 0;
 	WorkTime = 1800;
-	dwDisPicWithL(PIC_ICE);
-	DisTextSize(DW_SIZE_24);
-	DisSetAxis(600, 318);
-	funDisTime(WorkTime);	
+	dwD2DisPicWithL(PIC_ICE);
+	dwD2DisTime(TIME_ADDRESS, WorkTime);
 	
-	dwCancelKey();
-//	dwListenKey(BIO1Pres, 0, &btnBIO1);
-	dwListenKey(ScrubberPres, 0, &btnScrubber);
-	dwListenKey(UltrasoundPres, 0, &btnUltrasound);
-	dwListenKey(RFPres, 0, &btnRF);
-	dwListenKey(O2Pres, 0, &btnO2);
-	dwListenKey(CleanPres, 0, &btnClean);
-	dwListenKey(IcePres, 0, &btnIce);
-	dwListenKey(SprayerPres, 0, &btnSprayer);
-	dwListenKey(SetPres, 0, &btnSet);
-	dwListenKey(TimeUpPres, TimeUpFree, &btnTimeUp_Clean);
-	dwListenKey(TimeDownPres, TimeDownFree, &btnTimeDown_Clean);
-	dwListenKey(StartPres, 0, &btnStart);
-//	dwListenKey(MinPres, 0, &btnMin);
-	dwListenKey(StandbyPres, StandbyFree, &btnStandby);	//Standby
+	dwD2CancelKey();
+//	dwD2ListenKey(BIO1Pres, btnBIO1);
+	dwD2ListenKey(ScrubberPres, btnScrubber);
+	dwD2ListenKey(UltrasoundPres, btnUltrasound);
+	dwD2ListenKey(RFPres, btnRF);
+	dwD2ListenKey(O2Pres, btnO2);
+	dwD2ListenKey(CleanPres, btnClean);
+	dwD2ListenKey(IcePres, btnIce);
+	dwD2ListenKey(SprayerPres, btnSprayer);
+	dwD2ListenKey(CamPres, btnCam);
+	dwD2ListenKey(SetPres, btnSet);
+	dwD2ListenKey(StandbyPres, btnStandby);	//Standby
+	dwD2ListenKey(TimeUpPres, btnTimeUp);
+	dwD2ListenKey(TimeDownPres, btnTimeDown);
+	dwD2ListenKey(StartPres, btnStart);
 	
 	while(!menuExit)
 	{
-		dwHandler();
+		dwD2Handler();
 		if(BIT_GET(KeyScan(), 0))
 		{
 			if(keyTemp==0)
@@ -1460,6 +1262,7 @@ void PageIce(void)
 			{
 				ColdMode = 0;
 				ColdWorkFlag = 0;
+				dwD2DisICO(START_ADDRESS, 0);
 			}
 		}
 		WorkTimeDeal();	
@@ -1479,9 +1282,6 @@ void PageIce(void)
 			POWER_ON_PIN = 0;
 		}
 	} 
-	
-	dwWaitRelease();
-	dwHandler();
 }
 ///////////////////////////////////
 
@@ -1493,33 +1293,34 @@ void PageO2(void)
 {	
 	menuExit = 0;
 	WorkTime = 1800;
-	dwDisPicWithL(PIC_O2);
-	DisTextSize(DW_SIZE_24);
-	DisSetAxis(600, 278);
-	funDisTime(WorkTime);
-	dwDisChar(DW_SIZE_24, 622, 364, O2Mode+'A');	
-	
-	dwCancelKey();
-//	dwListenKey(BIO1Pres, 0, &btnBIO1);
-	dwListenKey(ScrubberPres, 0, &btnScrubber);
-	dwListenKey(UltrasoundPres, 0, &btnUltrasound);
-	dwListenKey(RFPres, 0, &btnRF);
-	dwListenKey(O2Pres, 0, &btnO2);
-	dwListenKey(CleanPres, 0, &btnClean);
-	dwListenKey(IcePres, 0, &btnIce);
-	dwListenKey(SprayerPres, 0, &btnSprayer);
-	dwListenKey(SetPres, 0, &btnSet);
-	dwListenKey(TimeUpPres, TimeUpFree, &btnTimeUp_O2);
-	dwListenKey(TimeDownPres, TimeDownFree, &btnTimeDown_O2);
-	dwListenKey(ModeUpPres, ModeUpFree, &btnModeUp_O2);
-	dwListenKey(ModeDownPres, ModeDownFree, &btnModeDown_O2);
-	dwListenKey(StartPres, 0, &btnStart);
-//	dwListenKey(MinPres, 0, &btnMin);
-	dwListenKey(StandbyPres, StandbyFree, &btnStandby);	//Standby
+	dwD2DisPicWithL(PIC_O2);
+	dwD2DisTime(TIME_ADDRESS, WorkTime);
+	if (O2Mode == 0)
+		dwD2DisChar(MODE_ADDRESS, 61);
+	else
+		dwD2DisChar(MODE_ADDRESS, O2Mode-1);
+
+	dwD2CancelKey();
+//	dwD2ListenKey(BIO1Pres, btnBIO1);
+	dwD2ListenKey(ScrubberPres, btnScrubber);
+	dwD2ListenKey(UltrasoundPres, btnUltrasound);
+	dwD2ListenKey(RFPres, btnRF);
+	dwD2ListenKey(O2Pres, btnO2);
+	dwD2ListenKey(CleanPres, btnClean);
+	dwD2ListenKey(IcePres, btnIce);
+	dwD2ListenKey(SprayerPres, btnSprayer);
+	dwD2ListenKey(CamPres, btnCam);
+	dwD2ListenKey(SetPres, btnSet);
+	dwD2ListenKey(StandbyPres, btnStandby);	//Standby
+	dwD2ListenKey(TimeUpPres, btnTimeUp);
+	dwD2ListenKey(TimeDownPres, btnTimeDown);
+	dwD2ListenKey(ModeUpPres, btnModeUp);
+	dwD2ListenKey(ModeDownPres, btnModeDown);
+	dwD2ListenKey(StartPres, btnStart);
 	
 	while(!menuExit)
 	{
-		dwHandler();
+		dwD2Handler();
 		if(nextPage!=FUNCTION_O2)
 		{
 			menuExit = 1;
@@ -1527,13 +1328,11 @@ void PageO2(void)
 			{
 				O2Mode = 0;
 				O2WorkFlag = 0;
+				dwD2DisICO(START_ADDRESS, 0);
 			}
 		}
 		WorkTimeDeal();
 	}
-	
-	dwWaitRelease();
-	dwHandler();
 }
 
 //O2 PWM
@@ -1548,10 +1347,11 @@ void O2PWM(u8 i, u8 Work)
 		PUMP220_PIN = 1;
 		switch(i)
 		{
-			case 0: {RGBValue = 0xF800; break;}	//RED
-			case 1: {RGBValue = 0x07E0; break;}	//GREEN
-			case 2: {RGBValue = 0x001F; break;}	//BLUE
-			case 3:	//gradually change
+			case 0: {RGBValue = 0x0000; break;}	//RED
+			case 1: {RGBValue = 0xF800; break;}	//RED
+			case 2: {RGBValue = 0x07E0; break;}	//GREEN
+			case 3: {RGBValue = 0x001F; break;}	//BLUE
+			case 4:	//gradually change
 			{
 				if(++O2Delay>=3000)
 				{
@@ -1608,37 +1408,36 @@ void O2PWM(u8 i, u8 Work)
 void PageClean(void)
 {
 	u8 keyTemp = 0, keyTemp2 = 0;
+
 	menuExit = 0;
 	WorkTime = 1800;
-	dwDisPicWithL(PIC_CLEAN);	
-	DisTextSize(DW_SIZE_24);
-	DisSetAxis(600, 318);
-	funDisTime(WorkTime);
+	dwD2DisPicWithL(PIC_CLEAN);	
+	dwD2DisTime(TIME_ADDRESS, WorkTime);
 	BottleASelect();
 	
-	dwCancelKey();
-//	dwListenKey(BIO1Pres, 0, &btnBIO1);
-	dwListenKey(ScrubberPres, 0, &btnScrubber);
-	dwListenKey(UltrasoundPres, 0, &btnUltrasound);
-	dwListenKey(RFPres, 0, &btnRF);
-	dwListenKey(O2Pres, 0, &btnO2);
-	dwListenKey(CleanPres, 0, &btnClean);
-	dwListenKey(IcePres, 0, &btnIce);
-	dwListenKey(SprayerPres, 0, &btnSprayer);
-	dwListenKey(SetPres, 0, &btnSet);
-	dwListenKey(TimeUpPres, TimeUpFree, &btnTimeUp_Clean);
-	dwListenKey(TimeDownPres, TimeDownFree, &btnTimeDown_Clean);
-	dwListenKey(StartPres, 0, &btnStart);
-//	dwListenKey(MinPres, 0, &btnMin);
-	dwListenKey(BottleASelect, 0, &btnBottleA);
-	dwListenKey(BottleBSelect, 0, &btnBottleB);
-	dwListenKey(BottleCSelect, 0, &btnBottleC);
-	dwListenKey(BottleDSelect, 0, &btnBottleD);
-	dwListenKey(StandbyPres, StandbyFree, &btnStandby);	//Standby
+	dwD2CancelKey();
+//	dwD2ListenKey(BIO1Pres, btnBIO1);
+	dwD2ListenKey(ScrubberPres, btnScrubber);
+	dwD2ListenKey(UltrasoundPres, btnUltrasound);
+	dwD2ListenKey(RFPres, btnRF);
+	dwD2ListenKey(O2Pres, btnO2);
+	dwD2ListenKey(CleanPres, btnClean);
+	dwD2ListenKey(IcePres, btnIce);
+	dwD2ListenKey(SprayerPres, btnSprayer);
+	dwD2ListenKey(CamPres, btnCam);
+	dwD2ListenKey(SetPres, btnSet);
+	dwD2ListenKey(StandbyPres, btnStandby);	//Standby
+	dwD2ListenKey(TimeUpPres, btnTimeUp);
+	dwD2ListenKey(TimeDownPres, btnTimeDown);
+	dwD2ListenKey(StartPres, btnStart);
+	dwD2ListenKey(BottleASelect, btnBottleA);
+	dwD2ListenKey(BottleBSelect, btnBottleB);
+	dwD2ListenKey(BottleCSelect, btnBottleC);
+	dwD2ListenKey(BottleDSelect, btnBottleD);
 	
 	while(!menuExit)
 	{
-		dwHandler();
+		dwD2Handler();
 		if(BIT_GET(KeyScan(), 4))	//handle start key
 		{
 			if(keyTemp==0)
@@ -1656,9 +1455,10 @@ void PageClean(void)
 			if((keyTemp2==0)||CleanWorkFlag)
 			{
 				keyTemp2 = 1;
-				dwCutPic(PIC_EFFECT, 595, 0, 799, 62, 595, 0);
+				dwD2DisICO(LEVEL_ADDRESS, 1);
+				PEN_CON_PIN = 1;
 				CleanWorkFlag = 0;
-				dwCutPic(PIC_SCRUBBER, btnStart.xs, btnStart.ys, btnStart.xe, btnStart.ye, btnStart.xs, btnStart.ys);
+				dwD2DisICO(START_ADDRESS, CleanWorkFlag);
 				INLINE_MUSIC_WATER_WARN();
 			}
 		}
@@ -1667,7 +1467,7 @@ void PageClean(void)
 			if(keyTemp2)
 			{
 				keyTemp2 = 0;
-				dwCutPic(PIC_CLEAN, 595, 0, 799, 62, 595, 0);
+				dwD2DisICO(LEVEL_ADDRESS, 0);
 			}
 		}
 		if(nextPage!=FUNCTION_CLEAN)
@@ -1677,6 +1477,7 @@ void PageClean(void)
 			{
 				CleanMode = 0;
 				CleanWorkFlag = 0;
+				dwD2DisICO(START_ADDRESS, 0);
 			}
 		}
 		WorkTimeDeal();
@@ -1686,10 +1487,10 @@ void PageClean(void)
 			PEN_CON_PIN = 0;
 			switch(CleanMode)
 			{
-				case 1: {BOTTLE1_PIN = 1; BOTTLE2_PIN = 0; BOTTLE3_PIN = 0; BOTTLE4_PIN = 0; break;}
-				case 2: {BOTTLE1_PIN = 0; BOTTLE2_PIN = 1; BOTTLE3_PIN = 0; BOTTLE4_PIN = 0; break;}
-				case 3: {BOTTLE1_PIN = 0; BOTTLE2_PIN = 0; BOTTLE3_PIN = 1; BOTTLE4_PIN = 0; break;}
-				case 4: {BOTTLE1_PIN = 0; BOTTLE2_PIN = 0; BOTTLE3_PIN = 0; BOTTLE4_PIN = 1; break;}
+				case 0: {BOTTLE1_PIN = 1; BOTTLE2_PIN = 0; BOTTLE3_PIN = 0; BOTTLE4_PIN = 0; break;}
+				case 1: {BOTTLE1_PIN = 0; BOTTLE2_PIN = 1; BOTTLE3_PIN = 0; BOTTLE4_PIN = 0; break;}
+				case 2: {BOTTLE1_PIN = 0; BOTTLE2_PIN = 0; BOTTLE3_PIN = 1; BOTTLE4_PIN = 0; break;}
+				case 3: {BOTTLE1_PIN = 0; BOTTLE2_PIN = 0; BOTTLE3_PIN = 0; BOTTLE4_PIN = 1; break;}
 				default: {break;}
 			}
 		}
@@ -1703,9 +1504,6 @@ void PageClean(void)
 			BOTTLE4_PIN = 0;
 		}
 	}
-	
-	dwWaitRelease();
-	dwHandler();
 }
 //////////////////////////////////////////////
 
@@ -1716,37 +1514,34 @@ void PageBIO1(void)
 	
 	menuExit = 0;
 	WorkTime = 1800;
-	dwDisPicWithL(PIC_BIO1);
-	DisTextSize(DW_SIZE_24);
-	DisSetAxis(600, 231);
-	funDisTime(WorkTime);
-	DisSetAxis(622, 321);
-	DisNumber(BIO1Intensity, 1, 0, Dis_Dec);
-	dwDisChar(DW_SIZE_24, 622, 411, BIO1Mode+'A');	
+	dwD2DisPicWithL(PIC_BIO1);
+	dwD2DisTime(TIME_ADDRESS, WorkTime);
+	dwD2DisNum(NUM_ADDRESS, BIO1Intensity);
+	dwD2DisChar(MODE_ADDRESS, BIO1Mode);		
 	
-	dwCancelKey();
-//	dwListenKey(BIO1Pres, 0, &btnBIO1);
-	dwListenKey(ScrubberPres, 0, &btnScrubber);
-	dwListenKey(UltrasoundPres, 0, &btnUltrasound);
-	dwListenKey(RFPres, 0, &btnRF);
-	dwListenKey(O2Pres, 0, &btnO2);
-	dwListenKey(CleanPres, 0, &btnClean);
-	dwListenKey(IcePres, 0, &btnIce);
-	dwListenKey(SprayerPres, 0, &btnSprayer);
-	dwListenKey(SetPres, 0, &btnSet);
-	dwListenKey(TimeUpPres, TimeUpFree, &btnTimeUp);
-	dwListenKey(TimeDownPres, TimeDownFree, &btnTimeDown);
-	dwListenKey(IntensityUpPres, IntensityUpFree, &btnIntensityUp);
-	dwListenKey(IntensityDownPres, IntensityDownFree, &btnIntensityDown);
-	dwListenKey(ModeUpPres, ModeUpFree, &btnModeUp);
-	dwListenKey(ModeDownPres, ModeDownFree, &btnModeDown);
-	dwListenKey(StartPres, 0, &btnStart);
-//	dwListenKey(MinPres, 0, &btnMin);
-	dwListenKey(StandbyPres, StandbyFree, &btnStandby);	//Standby
+	dwD2CancelKey();
+//	dwD2ListenKey(BIO1Pres, btnBIO1);
+	dwD2ListenKey(ScrubberPres, btnScrubber);
+	dwD2ListenKey(UltrasoundPres, btnUltrasound);
+	dwD2ListenKey(RFPres, btnRF);
+	dwD2ListenKey(O2Pres, btnO2);
+	dwD2ListenKey(CleanPres, btnClean);
+	dwD2ListenKey(IcePres, btnIce);
+	dwD2ListenKey(SprayerPres, btnSprayer);
+	dwD2ListenKey(CamPres, btnCam);
+	dwD2ListenKey(SetPres, btnSet);
+	dwD2ListenKey(StandbyPres, btnStandby);	//Standby
+	dwD2ListenKey(TimeUpPres, btnTimeUp);
+	dwD2ListenKey(TimeDownPres, btnTimeDown);
+	dwD2ListenKey(IntensityUpPres, btnIntensityUp);
+	dwD2ListenKey(IntensityDownPres, btnIntensityDown);
+	dwD2ListenKey(ModeUpPres, btnModeUp);
+	dwD2ListenKey(ModeDownPres, btnModeDown);
+	dwD2ListenKey(StartPres, btnStart);
 	
 	while(!menuExit)
 	{
-		dwHandler();
+		dwD2Handler();
 		if(BIT_GET(KeyScan(), 1))
 		{
 			if(keyTemp==0)
@@ -1768,6 +1563,7 @@ void PageBIO1(void)
 				BIO1Intensity = 0;
 				BIO1Mode = 0;
 				BIO1WorkFlag = 0;
+				dwD2DisICO(START_ADDRESS, 0);
 			}
 		}
 		
@@ -1775,8 +1571,6 @@ void PageBIO1(void)
 	}
 	TIM_SetCompare4(TIM4, BIO1IntensityTable[0]);
 	RF_CON_PIN = 1;
-	dwWaitRelease();
-	dwHandler();
 }
 
 //BIO1 PWM
@@ -1811,50 +1605,50 @@ void BIO1PWM(u8 i, u8 Work)
 void PageSprayer(void)
 {
 	u8 keyTemp = 0;
+
 	menuExit = 0;
 	WorkTime = 1800;
-	dwDisPicWithL(PIC_SPRAYER);
-	DisTextSize(DW_SIZE_24);
-	DisSetAxis(600, 318);
-	funDisTime(WorkTime);	
+	dwD2DisPicWithL(PIC_SPRAYER);
+	dwD2DisTime(TIME_ADDRESS, WorkTime);
 	
-	dwCancelKey();
-//	dwListenKey(BIO1Pres, 0, &btnBIO1);
-	dwListenKey(ScrubberPres, 0, &btnScrubber);
-	dwListenKey(UltrasoundPres, 0, &btnUltrasound);
-	dwListenKey(RFPres, 0, &btnRF);
-	dwListenKey(O2Pres, 0, &btnO2);
-	dwListenKey(CleanPres, 0, &btnClean);
-	dwListenKey(IcePres, 0, &btnIce);
-	dwListenKey(SprayerPres, 0, &btnSprayer);
-	dwListenKey(SetPres, 0, &btnSet);
-	dwListenKey(TimeUpPres, TimeUpFree, &btnTimeUp_Clean);
-	dwListenKey(TimeDownPres, TimeDownFree, &btnTimeDown_Clean);
-	dwListenKey(StartPres, 0, &btnStart);
-//	dwListenKey(MinPres, 0, &btnMin);
-	dwListenKey(StandbyPres, StandbyFree, &btnStandby);	//Standby
+	dwD2CancelKey();
+//	dwD2ListenKey(BIO1Pres, btnBIO1);
+	dwD2ListenKey(ScrubberPres, btnScrubber);
+	dwD2ListenKey(UltrasoundPres, btnUltrasound);
+	dwD2ListenKey(RFPres, btnRF);
+	dwD2ListenKey(O2Pres, btnO2);
+	dwD2ListenKey(CleanPres, btnClean);
+	dwD2ListenKey(IcePres, btnIce);
+	dwD2ListenKey(SprayerPres, btnSprayer);
+	dwD2ListenKey(CamPres, btnCam);
+	dwD2ListenKey(SetPres, btnSet);
+	dwD2ListenKey(StandbyPres, btnStandby);	//Standby
+	dwD2ListenKey(TimeUpPres, btnTimeUp);
+	dwD2ListenKey(TimeDownPres, btnTimeDown);
+	dwD2ListenKey(StartPres, btnStart);
 		
 	while(!menuExit)
 	{
-		dwHandler();
-		if(BIT_GET(KeyScan(), 3))
-		{
-			if(keyTemp==0)
-			{
-				keyTemp = 1;
-				StartPres();
-			}
-		}
-		else
-		{
-			keyTemp = 0;
-		}
+		dwD2Handler();
+		// if(BIT_GET(KeyScan(), 3))
+		// {
+		// 	if(keyTemp==0)
+		// 	{
+		// 		keyTemp = 1;
+		// 		StartPres();
+		// 	}
+		// }
+		// else
+		// {
+		// 	keyTemp = 0;
+		// }
 		if(nextPage!=FUNCTION_SPRAYER)
 		{
 			menuExit = 1;
 			if(nextPage!=FUNCTION_MAIN)
 			{
 				SprayerWorkFlag = 0;
+				dwD2DisICO(START_ADDRESS, 0);
 			}
 		}
 		WorkTimeDeal();	
@@ -1865,13 +1659,10 @@ void PageSprayer(void)
 		}
 		else
 		{
-			GUN_CON_PIN = 1;
+			// GUN_CON_PIN = 1;
 			GUN_CHANNEL_PIN = 0;
 		}
 	} 
-	
-	dwWaitRelease();
-	dwHandler();
 }
 
 //Handle Key scan
@@ -2008,8 +1799,8 @@ u8 KeyScan(void)
 
 ///////////////////////////////////////////////////////
 //Bee function
-const u16 BeeModPeriod[] = {110, 410, 1000}; 
-const u16 BeeModCompare[] = {100, 400, 500};
+const u16 BeeModPeriod[] = {110, 410, 1000, 1000}; 
+const u16 BeeModCompare[] = {100, 400, 500, 800};
 u8 BeeMod = 0, BeeTime = 0;
 void BeeFunction(void)
 {	

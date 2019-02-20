@@ -150,10 +150,11 @@ void TIM2_IRQHandler(void)   //TIM2中断 1ms
 		TIM_ClearITPendingBit(TIM2, TIM_IT_Update);  //清除TIMx更新中断标志 
 		Flag1ms = 1;
 		
+		dwD2TimeProcess();
+
 		if(++Flag10msCnt>=50)
 		{
 			Flag10msCnt = 0;
-			TP_Delay = 1;
 		}
 		KeyDelay = 1;
 		
