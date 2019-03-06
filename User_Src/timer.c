@@ -171,7 +171,7 @@ void TIM2_IRQHandler(void)   //TIM2ÖÐ¶Ï 1ms
 		
 		UltrasoundPWM(UltrasoundMode, UltrasoundWorkFlag);			
 		BIO1PWM(BIO1Mode, BIO1WorkFlag);		
-		RFPWM(RFMode, RFWorkFlag);
+		//RFPWM(RFMode, RFWorkFlag);
 			
 		BeeFunction();
 				

@@ -40,6 +40,7 @@
 #define RF_CON_PIN PBout(11)
 #define ULT_CON_PIN PBout(13)
 #define GUN_CON_PIN PBout(15)
+#define CAM_CON_PIN PBout(1)
 #define PEN_CON_PIN PCout(7)
 #define COLD_BUTTON_PIN PCin(11)
 #define RF_BUTTON_PIN PBin(12)
@@ -54,6 +55,8 @@
 #define PIC_MAIN 11
 #define PIC_SCRUBBER 17
 #define PIC_SCRUBBER_ADJ 19
+#define PIC_CAMERA 7
+#define PIC_PRINT 61
 #define PIC_RF 16
 #define PIC_ULTRASOUND 15
 #define PIC_ICE 18

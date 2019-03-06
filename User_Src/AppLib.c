@@ -13,7 +13,8 @@
 #define BOTTLE_ADDRESS 0X1006
 #define LEVEL_ADDRESS 0X100E
 
-//const u16 CoolIntensity[] = {0,1700,1800,1900,2000,2175,2275,2375,2475,2550,2625};	//2.2 2.4 2.6 2.8 3.0 3.2 3.4 3.6 3.8 4.0 
+//const u16 CoolIntensity[] = {0,1700,1800,1900,2000,2175,2275,2375,2475,2550,2625};	
+								//2.2 2.4 2.6 2.8 3.0 3.2 3.4 3.6 3.8 4.0 
 u8 Flag1ms = 0;
 u8 TouchKey = 0;
 u8 nextPage = 0;
@@ -30,12 +31,15 @@ u8 CleanMode = 0;
 u8 UltrasoundMode = 0, UltrasoundIntensity = 0;
 u8 ScrubberWorkFlag = 0, O2WorkFlag = 0, RFWorkFlag = 0, BIO1WorkFlag = 0,	\
 	 CleanWorkFlag = 0, UltrasoundWorkFlag = 0, ColdWorkFlag = 0, SprayerWorkFlag = 0;
-const float ScrubberPWMTable[] = {0, 0.1, 0.13, 0.17, 0.2};
+const float ScrubberPWMTable[] = {0, 0.1, 0.11, 0.12, 0.13, 0.14, 0.15,
+									0.16, 0.17, 0.18, 0.2};
 u16 ScrubberPWMIntensity = 0;
-const u16 BIO1IntensityTable[] = {36000, 30000, 29000, 28000, 27000, 26000};
+const u16 BIO1IntensityTable[] = {36000, 29000, 28000, 28500, 27000, 26500, 26000,
+									25000, 24500, 24000, 23500};
 //{36000, 20000, 10000, 5000, 0, 0};
 //{36000, 20000, 15000, 10000, 5000, 0};
 u16 RGBValue = 0;
+static u8 keyPrintBack = 0;
 
 //Button
 static const u16 btnEnter = 0X0031;
@@ -67,7 +71,8 @@ static const u16 btnBottleC = 0X0019;
 static const u16 btnBottleD = 0X001A;
 static const u16 btnStandby = 0X000B;
 static const u16 btnCamBack = 0X0055;
-static const u16 btnCam = 0X0001;
+static const u16 btnCam = 0X0056;
+static const u16 btnPrintBack = 0X0057;
 
 /*language select*/
 static void menuChinsePres(void)
@@ -104,14 +109,25 @@ static void CamPres(void)
 {
 	INLINE_MUSIC_BUTTON();
 	nextPage = FUNCTION_CAM;
-	GUN_CON_PIN = 0;
+	CAM_CON_PIN = 1;
 }
 
 static void CamBackPres(void)
 {
 	INLINE_MUSIC_BUTTON();
 	nextPage = FUNCTION_MAIN;
+	CAM_CON_PIN = 0;
+}
+
+static void PrintBackPres(void)
+{
+	INLINE_MUSIC_BUTTON();
+	keyPrintBack = 0;
 	GUN_CON_PIN = 1;
+	
+	//Open Camera
+	dwD2DisPicNoL(PIC_CAMERA);
+	dwD2CameraOpen();
 }
 
 static void ScrubberPres(void)
@@ -182,7 +198,7 @@ static void IntensityUpPres(void)
 	{
 		case FUNCTION_SCRUBBER: 
 		{
-			if(ScrubberIntensity<4)
+			if(ScrubberIntensity<10)
 				ScrubberIntensity++;
 			
 			dwD2DisNum(NUM_ADDRESS, ScrubberIntensity);
@@ -206,7 +222,7 @@ static void IntensityUpPres(void)
 		}
 		case FUNCTION_BIO1:
 		{
-			if(BIO1Intensity<4)
+			if(BIO1Intensity<10)
 				BIO1Intensity++;
 			dwD2DisNum(NUM_ADDRESS, BIO1Intensity);
 			TIM_SetCompare4(TIM4, BIO1IntensityTable[BIO1Intensity]);
@@ -214,7 +230,7 @@ static void IntensityUpPres(void)
 		}
 		case FUNCTION_ULTRASOUND:
 		{
-			if(UltrasoundIntensity<4)
+			if(UltrasoundIntensity<10)
 				UltrasoundIntensity++;
 			dwD2DisNum(NUM_ADDRESS, UltrasoundIntensity);
 			break;
@@ -575,7 +591,7 @@ static void EnterPres(void)
 	nextPage = FUNCTION_MAIN;
 	INLINE_MUSIC_REDAY();
 	dwD2DisPicNoL(PIC_START_ANIMATION);
-	dwD2SetBL(0X64, 0X32, 0X09C4);	//change display light
+	dwD2SetBL(0X64, 0X64, 0X02EE);	//change display light
 	PUMP24_PIN = 1;
 }
 
@@ -638,7 +654,8 @@ void WorkTimeDeal(void)
 //				UltrasoundWorkFlag = 0; 
 //				ColdWorkFlag = 0;
 //				SprayerWorkFlag = 0;
-//				dwCutPic(PIC_SCRUBBER, btnStart.xs, btnStart.ys, btnStart.xe, btnStart.ye, btnStart.xs, btnStart.ys);	//start button dis
+//				dwCutPic(PIC_SCRUBBER, btnStart.xs, btnStart.ys, btnStart.xe, 
+//							btnStart.ye, btnStart.xs, btnStart.ys);	//start button dis
 			}
 			dwD2DisTime(TIME_ADDRESS, WorkTime);
 		}
@@ -659,9 +676,10 @@ void IO_Init(void)
 	
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; //ÍÆÍìÊä³ö
 	
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_10|GPIO_Pin_3|GPIO_Pin_4|GPIO_Pin_5|GPIO_Pin_6;
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_10|GPIO_Pin_3|GPIO_Pin_4| \
+									GPIO_Pin_5|GPIO_Pin_6;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
-	GPIO_ResetBits(GPIOB, GPIO_Pin_0|GPIO_Pin_10|GPIO_Pin_3|GPIO_Pin_4|GPIO_Pin_5|GPIO_Pin_6);
+	GPIO_ResetBits(GPIOB, GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_10|GPIO_Pin_3|GPIO_Pin_4|GPIO_Pin_5|GPIO_Pin_6);
 	
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3|GPIO_Pin_4|GPIO_Pin_5|GPIO_Pin_9;
 	GPIO_Init(GPIOC, &GPIO_InitStructure);
@@ -699,9 +717,11 @@ void IO_Init(void)
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6|GPIO_Pin_8|GPIO_Pin_11;
 	GPIO_Init(GPIOC, &GPIO_InitStructure);
 
-//	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1|GPIO_Pin_3|GPIO_Pin_4|GPIO_Pin_5|GPIO_Pin_6|GPIO_Pin_7|GPIO_Pin_8|GPIO_Pin_10|GPIO_Pin_12|GPIO_Pin_15;	//SOUND		 
+//	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1|GPIO_Pin_3|GPIO_Pin_4|GPIO_Pin_5|\
+//									GPIO_Pin_6|GPIO_Pin_7|GPIO_Pin_8|GPIO_Pin_10|GPIO_Pin_12|GPIO_Pin_15;		 
 //	GPIO_Init(GPIOB, &GPIO_InitStructure);	 
-//	GPIO_ResetBits(GPIOB, GPIO_Pin_1|GPIO_Pin_3|GPIO_Pin_4|GPIO_Pin_5|GPIO_Pin_6|GPIO_Pin_7|GPIO_Pin_8|GPIO_Pin_10|GPIO_Pin_12|GPIO_Pin_15); 
+//	GPIO_ResetBits(GPIOB, GPIO_Pin_1|GPIO_Pin_3|GPIO_Pin_4|GPIO_Pin_5|GPIO_Pin_6|GPIO_Pin_7|
+//							GPIO_Pin_8|GPIO_Pin_10|GPIO_Pin_12|GPIO_Pin_15); 
 //	
 //	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_5|GPIO_Pin_15;
 //	GPIO_Init(GPIOA, &GPIO_InitStructure);	 
@@ -792,7 +812,9 @@ void PageMain(void)
 
 //Scrubber function
 void PageScrubber(void)
-{	
+{
+	menuExit = 0;
+	WorkTime = 1800;	
 	dwD2DisPicWithL(PIC_SCRUBBER);
 	dwD2DisTime(TIME_ADDRESS, WorkTime);
 	dwD2DisNum(NUM_ADDRESS, ScrubberIntensity);
@@ -801,9 +823,6 @@ void PageScrubber(void)
 	TIM_SetAutoreload(TIM1, (u16)(720000/ScrubberFrequency));
 	ScrubberPWMIntensity = 720000/ScrubberFrequency*ScrubberPWMTable[ScrubberIntensity];
 	TIM_SetCompare1(TIM1,ScrubberPWMIntensity);
-	
-	menuExit = 0;
-	WorkTime = 1800;
 	
 	dwD2CancelKey();
 //	dwD2ListenKey(BIO1Pres, btnBIO1);
@@ -1012,7 +1031,7 @@ void PageUltrasound(void)
 }
 
 //UltrasoundPWM
-const u8 UltrasoundIntensityTable[] = {0, 1, 2, 3, 4, 6};
+const u8 UltrasoundIntensityTable[] = {0, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 6};
 const u16 UltrasoundModPeriod[] = {1000, 510, 1020};
 const u16 UltrasoundModCompare[] = {1000, 252, 504};
 void UltrasoundPWM(u8 i, u8 Work)
@@ -1059,15 +1078,57 @@ void UltrasoundPWM(u8 i, u8 Work)
 
 //Camera function
 void PageCAM(void)
-{
+{	
+	u8 keyTemp = 0;
+	
 	menuExit = 0;
+	
+	//Open Camera
+	dwD2DisPicNoL(PIC_CAMERA);
+	dwD2CameraOpen();
 	
 	dwD2CancelKey();
 	dwD2ListenKey(CamBackPres, btnCamBack);
+	dwD2ListenKey(PrintBackPres, btnPrintBack);
 
 	while(!menuExit)
 	{
 		dwD2Handler();
+		
+		if(BIT_GET(KeyScan(), 3))	//handle print key
+		{
+			if(keyTemp==0)
+			{
+				keyTemp = 1;
+				if(keyPrintBack)
+				{
+					INLINE_MUSIC_BUTTON();
+					keyPrintBack = 0;
+					GUN_CON_PIN = 1;
+					
+					//Open Camera
+					dwD2DisPicNoL(PIC_CAMERA);
+					dwD2CameraOpen();
+				}
+				else
+				{
+					INLINE_MUSIC_BUTTON();
+					GUN_CON_PIN = 0;
+					keyPrintBack = 1;
+					dwD2Print();
+					delay_ms(1000); //display processing
+					delay_ms(1000); 
+					delay_ms(500);
+					dwD2DisPicNoL(PIC_PRINT); //display picture
+					delay_ms(500); //let display respond				
+				}
+			}
+		}
+		else
+		{
+			keyTemp = 0;
+		}
+		
 		if(nextPage!=FUNCTION_CAM)
 		{
 			menuExit = 1;

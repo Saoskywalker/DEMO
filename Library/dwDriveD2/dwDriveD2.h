@@ -69,6 +69,8 @@ void dwD2SetBL(u8 i, u8 j, u16 k);
 void dwD2Rest(void);
 u8 dwD2Check(void);
 void dwD2DisICO(u16 address, u8 i);
+void dwD2CameraOpen(void);
+void dwD2Print(void);
 
 /*Page change*/
 void dwD2DisPicWithL(u8 i);

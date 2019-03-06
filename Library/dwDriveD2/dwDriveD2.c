@@ -198,6 +198,20 @@ u8 dwD2Check(void)
     return 1; //Fail
 }
 
+//open camera
+static const u8 dwD2CameraOpenFrame[] = {0X82, 0X21, 0X01, 0X00, 0X01};
+void dwD2CameraOpen(void)
+{
+	dwD2SendFrame((u8 *)&dwD2CameraOpenFrame[0], sizeof(dwD2CameraOpenFrame));
+}
+
+//print
+static const u8 dwD2PrintFrame[] = {0X82, 0XE9, 0X1F, 0X01, 0X01};
+void dwD2Print(void)
+{
+	dwD2SendFrame((u8 *)&dwD2PrintFrame[0], sizeof(dwD2PrintFrame));
+}
+
 //Reset
 static const u8 dwD2ResetFrame[] = {0X82, 0X00, 0X04, 0X55, 0XAA, 0X5A, 0XA5};
 void dwD2Rest(void)
@@ -271,8 +285,8 @@ void dwD2DisNum(u16 address, u8 i)
     dwD2CharFrame[1] = address>>8;
     dwD2CharFrame[3] = ' ';
     dwD2CharFrame[4] = ' ';
-    dwD2CharFrame[5] = i%10+'0';
-    dwD2CharFrame[6] = ' ';
+    dwD2CharFrame[5] = i/10+'0';
+    dwD2CharFrame[6] = i%10+'0';
     dwD2CharFrame[7] = ' ';
     dwD2SendFrame(&dwD2CharFrame[0], sizeof(dwD2CharFrame));
 }
@@ -342,8 +356,7 @@ void dwD2Handler(void)
         return;
     }
 
-    if (((dwD2RecData[2] == (KEY_ADDRESS >> 8)) && (dwD2RecData[3] == (KEY_ADDRESS & 0X00FF)))||
-        ((dwD2RecData[2] == (0X2101 >> 8)) && (dwD2RecData[3] == (0X2101 & 0X00FF))))
+    if ((dwD2RecData[2] == (KEY_ADDRESS >> 8)) && (dwD2RecData[3] == (KEY_ADDRESS & 0X00FF)))
     {
         uasrt1SendByte(dwD2RecData[6]);
         //check key code
