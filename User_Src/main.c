@@ -9,7 +9,7 @@ History:2018.1.13: Debug completed
 2018.3.9: add fan2, change scrubber frequency range to 20.1~30.0, Voltage Adj change, Scrubber bug repaired
 flash way changed, intensity changed, screenCheck(); advance work
 2018.11.1: Change STM32F103C8T6 to STM32F103R8T6(more pin), use for v2.0 broad
-2018.11.13: Product Beta version completed
+2018.11.13: Product Beta version completced
 2018.11.15: add two O2 valve, use BIO pin, use display sound 
 2019.2.19:  Change DWC2 to DWD2, Add camera(Power pin use rf pin), Sprayer change(without led and button, 
 			LED contral use for camera), O2 add light off mode, RF PWM PIN use to camera

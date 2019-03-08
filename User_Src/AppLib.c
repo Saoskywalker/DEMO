@@ -31,8 +31,8 @@ u8 CleanMode = 0;
 u8 UltrasoundMode = 0, UltrasoundIntensity = 0;
 u8 ScrubberWorkFlag = 0, O2WorkFlag = 0, RFWorkFlag = 0, BIO1WorkFlag = 0,	\
 	 CleanWorkFlag = 0, UltrasoundWorkFlag = 0, ColdWorkFlag = 0, SprayerWorkFlag = 0;
-const float ScrubberPWMTable[] = {0, 0.1, 0.11, 0.12, 0.13, 0.14, 0.15,
-									0.16, 0.17, 0.18, 0.2};
+const float ScrubberPWMTable[] = {0, 0.1, 0.13, 0.16, 0.18, 0.2, 0.22,
+									0.24, 0.26, 0.28, 0.3};
 u16 ScrubberPWMIntensity = 0;
 const u16 BIO1IntensityTable[] = {36000, 29000, 28000, 28500, 27000, 26500, 26000,
 									25000, 24500, 24000, 23500};
@@ -677,9 +677,10 @@ void IO_Init(void)
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP; //ÍÆÍìÊä³ö
 	
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_10|GPIO_Pin_3|GPIO_Pin_4| \
-									GPIO_Pin_5|GPIO_Pin_6;
+									GPIO_Pin_5|GPIO_Pin_6|GPIO_Pin_7;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
-	GPIO_ResetBits(GPIOB, GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_10|GPIO_Pin_3|GPIO_Pin_4|GPIO_Pin_5|GPIO_Pin_6);
+	GPIO_ResetBits(GPIOB, GPIO_Pin_0|GPIO_Pin_1|GPIO_Pin_10|GPIO_Pin_3|
+					GPIO_Pin_4|GPIO_Pin_5|GPIO_Pin_6|GPIO_Pin_7);
 	
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3|GPIO_Pin_4|GPIO_Pin_5|GPIO_Pin_9;
 	GPIO_Init(GPIOC, &GPIO_InitStructure);
@@ -927,7 +928,7 @@ void PageScrubberAdj(void)
 {
 	ScrubberWorkFlag = 1;
 	ScrubberMode = 0;
-	ScrubberIntensity = 4;
+	ScrubberIntensity = 10;
 	TouchKey = 1;
 	menuExit = 0;
 	
@@ -1031,7 +1032,7 @@ void PageUltrasound(void)
 }
 
 //UltrasoundPWM
-const u8 UltrasoundIntensityTable[] = {0, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 6};
+const u8 UltrasoundIntensityTable[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 12};
 const u16 UltrasoundModPeriod[] = {1000, 510, 1020};
 const u16 UltrasoundModCompare[] = {1000, 252, 504};
 void UltrasoundPWM(u8 i, u8 Work)
@@ -1051,7 +1052,7 @@ void UltrasoundPWM(u8 i, u8 Work)
 		if(UltrasoundTimeCnt<UltrasoundModCompare[UltrasoundModRenew])				
 		{
 			//PWM2
-			if(++UltrasoundTimeCnt2>=6)
+			if(++UltrasoundTimeCnt2>=12)
 			{
 				UltrasoundTimeCnt2 = 0;
 				UltrasoundModRenew2 = UltrasoundIntensity;
