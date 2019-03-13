@@ -31,11 +31,12 @@ u8 CleanMode = 0;
 u8 UltrasoundMode = 0, UltrasoundIntensity = 0;
 u8 ScrubberWorkFlag = 0, O2WorkFlag = 0, RFWorkFlag = 0, BIO1WorkFlag = 0,	\
 	 CleanWorkFlag = 0, UltrasoundWorkFlag = 0, ColdWorkFlag = 0, SprayerWorkFlag = 0;
-const float ScrubberPWMTable[] = {0, 0.1, 0.13, 0.16, 0.18, 0.2, 0.22,
-									0.24, 0.26, 0.28, 0.3};
+const float ScrubberPWMTable[] = {0, 0.1, 0.13, 0.16, 0.18, 0.2, 0.22, 0.24, 0.27, 0.3, 0.35};
 u16 ScrubberPWMIntensity = 0;
-const u16 BIO1IntensityTable[] = {36000, 29000, 28000, 28500, 27000, 26500, 26000,
-									25000, 24500, 24000, 23500};
+//const u16 BIO1IntensityTable[] = {36000, 29000, 28000, 28500, 27000, 26500, 26000,
+//									25000, 24500, 24000, 23500};
+const u16 BIO1IntensityTable[] = {36000, 28000, 27000, 26500, 26000,
+																	25000, 24500, 24000, 23500, 23000, 22500};
 //{36000, 20000, 10000, 5000, 0, 0};
 //{36000, 20000, 15000, 10000, 5000, 0};
 u16 RGBValue = 0;
@@ -101,7 +102,7 @@ static void StandbyPres(void)
 {
 	INLINE_MUSIC_STANDBY();
 	nextPage = FUNCTION_RESTART;
-	dwD2SetBL(0X03, 0X03, 0X02EE);	//change display light
+	dwD2SetBL(0X03, 0X03, 0XFFFF);	//change display light
 	PUMP24_PIN = 0;	//Close front LED
 }
 
@@ -591,7 +592,7 @@ static void EnterPres(void)
 	nextPage = FUNCTION_MAIN;
 	INLINE_MUSIC_REDAY();
 	dwD2DisPicNoL(PIC_START_ANIMATION);
-	dwD2SetBL(0X64, 0X64, 0X02EE);	//change display light
+	dwD2SetBL(0X64, 0X64, 0XFFFF);	//change display light
 	PUMP24_PIN = 1;
 }
 
@@ -1032,7 +1033,7 @@ void PageUltrasound(void)
 }
 
 //UltrasoundPWM
-const u8 UltrasoundIntensityTable[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 12};
+const u8 UltrasoundIntensityTable[] = {0, 1, 2, 3, 4, 5, 6, 6, 7, 7, 8, 12};
 const u16 UltrasoundModPeriod[] = {1000, 510, 1020};
 const u16 UltrasoundModCompare[] = {1000, 252, 504};
 void UltrasoundPWM(u8 i, u8 Work)
@@ -1117,9 +1118,14 @@ void PageCAM(void)
 					GUN_CON_PIN = 0;
 					keyPrintBack = 1;
 					dwD2Print();
-					delay_ms(1000); //display processing
-					delay_ms(1000); 
-					delay_ms(500);
+					delay_ms(625); //display processing
+					GUN_CON_PIN = 1;
+					delay_ms(625); 
+					GUN_CON_PIN = 0;
+					delay_ms(625);
+					GUN_CON_PIN = 1;
+					delay_ms(625); 
+					GUN_CON_PIN = 0;
 					dwD2DisPicNoL(PIC_PRINT); //display picture
 					delay_ms(500); //let display respond				
 				}

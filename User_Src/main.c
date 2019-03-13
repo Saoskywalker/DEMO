@@ -50,7 +50,7 @@ int main()
 		}
 	}
 //	dwD2DisPicNoL(0);
-	dwD2SetBL(0X64, 0X64, 0X02EE);	//change display light
+	dwD2SetBL(0X64, 0X64, 0XFFFF);	//change display light
 	TIM2_Int_Init(999, 70); //1ms
 	INLINE_MUSIC_POWERUP();
 	dwD2SendFrame((u8 *)&dwD2PrintID[0], sizeof(dwD2PrintID)); //Change print id: 61
