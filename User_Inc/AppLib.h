@@ -8,6 +8,7 @@
 #include "adc.h"
 #include "stmflash.h"
 #include "dwDriveD2.h"
+#include "pad_com.h"
 
 //Temperature table
 #define TEMP_40 1418
@@ -81,19 +82,20 @@
 #define MSC_READY 	7
 
 extern u8 nextPage;
-#define FUNCTION_RESTART 0
-#define FUNCTION_SCRUBBER 1
-#define FUNCTION_RF 2
-#define FUNCTION_ULTRASOUND 3
-#define FUNCTION_ICE 4
-#define FUNCTION_BIO1 5
-#define FUNCTION_SCRUBBER_ADJ 7
-#define FUNCTION_MAIN 8
+#define FUNCTION_BIO1 1
+#define FUNCTION_ULTRASOUND 2
+#define FUNCTION_SCRUBBER 4
+#define FUNCTION_ICE 10
+#define FUNCTION_CLEAN 8
+#define FUNCTION_SPRAYER 6
 #define FUNCTION_O2 9
-#define FUNCTION_CLEAN 10
-#define FUNCTION_LANGUAGE 11
-#define FUNCTION_SPRAYER 12
-#define FUNCTION_CAM 13
+
+#define FUNCTION_RESTART 0
+#define FUNCTION_RF 3
+#define FUNCTION_SCRUBBER_ADJ 0x0d
+#define FUNCTION_MAIN 0x0e
+#define FUNCTION_LANGUAGE 0x0f
+#define FUNCTION_CAM 7
 
 //Flash function
 #define FLASH_LANG_ADDR	 0X0800F7FC //language save

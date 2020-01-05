@@ -192,7 +192,8 @@ void USART1_IRQHandler(void)                	//串口1中断服务程序
 //	u16 yyy = 0;
 	if(USART_GetITStatus(USART1, USART_IT_RXNE) != RESET)  //接收中断(接收到的数据必须是0x0d 0x0a结尾)
 	{
-		 commRx1Handler(USART_ReceiveData(USART1));  
+		//  commRx1Handler(USART_ReceiveData(USART1));  
+		pad_rec(USART_ReceiveData(USART1));
 //		if(++i<=2)
 //		{
 //			ddd[i] = USART_ReceiveData(USART1);
@@ -212,7 +213,8 @@ void USART2_IRQHandler(void)
 	 if(USART_GetITStatus(USART2, USART_IT_RXNE) != RESET)
 	 {                  
 			//dwReceiveByte(USART_ReceiveData(USART2));	//读取接收到的数据	
-			dwD2RecFrame(USART_ReceiveData(USART2));
+			//dwD2RecFrame(USART_ReceiveData(USART2));
+			USART_ReceiveData(USART2);
 	 }   
 }
 

@@ -8,6 +8,8 @@
         "sys.h": "c",
         "applib.h": "c",
         "dwdriver.h": "c",
-        "dwdrived2.h": "c"
+        "dwdrived2.h": "c",
+        "userbaselib.h": "c",
+        "pad_com.h": "c"
     }
 }

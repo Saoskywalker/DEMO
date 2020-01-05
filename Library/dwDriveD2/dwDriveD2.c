@@ -358,7 +358,7 @@ void dwD2Handler(void)
 
     if ((dwD2RecData[2] == (KEY_ADDRESS >> 8)) && (dwD2RecData[3] == (KEY_ADDRESS & 0X00FF)))
     {
-        uasrt1SendByte(dwD2RecData[6]);
+        // uasrt1SendByte(dwD2RecData[6]);
         //check key code
         j = ((j + dwD2RecData[5]) << 8) + dwD2RecData[6];
         for (; i <= keyNum; i++)

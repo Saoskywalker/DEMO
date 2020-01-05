@@ -640,25 +640,13 @@ void WorkTimeDeal(void)
 			Flag1s = 0;
 			if(WorkTime>0)
 			{
-				WorkTime--;
+				// WorkTime--;
 			}
 			else
 			{	
 				WorkTime = 1800;
 				StartPres();
-//				INLINE_MUSIC_STOP();
-//				ScrubberWorkFlag = 0;
-//				O2WorkFlag = 0;
-//				RFWorkFlag = 0;
-//				BIO1WorkFlag = 0;
-//				CleanWorkFlag = 0;
-//				UltrasoundWorkFlag = 0; 
-//				ColdWorkFlag = 0;
-//				SprayerWorkFlag = 0;
-//				dwCutPic(PIC_SCRUBBER, btnStart.xs, btnStart.ys, btnStart.xe, 
-//							btnStart.ye, btnStart.xs, btnStart.ys);	//start button dis
 			}
-			dwD2DisTime(TIME_ADDRESS, WorkTime);
 		}
 	}
 }
@@ -711,33 +699,11 @@ void IO_Init(void)
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
 	
-//	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; //上拉输入
-	
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12|GPIO_Pin_14;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 	
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6|GPIO_Pin_8|GPIO_Pin_11;
 	GPIO_Init(GPIOC, &GPIO_InitStructure);
-
-//	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1|GPIO_Pin_3|GPIO_Pin_4|GPIO_Pin_5|\
-//									GPIO_Pin_6|GPIO_Pin_7|GPIO_Pin_8|GPIO_Pin_10|GPIO_Pin_12|GPIO_Pin_15;		 
-//	GPIO_Init(GPIOB, &GPIO_InitStructure);	 
-//	GPIO_ResetBits(GPIOB, GPIO_Pin_1|GPIO_Pin_3|GPIO_Pin_4|GPIO_Pin_5|GPIO_Pin_6|GPIO_Pin_7|
-//							GPIO_Pin_8|GPIO_Pin_10|GPIO_Pin_12|GPIO_Pin_15); 
-//	
-//	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_5|GPIO_Pin_15;
-//	GPIO_Init(GPIOA, &GPIO_InitStructure);	 
-//	GPIO_ResetBits(GPIOA, GPIO_Pin_0|GPIO_Pin_5|GPIO_Pin_15);
-
-//	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;	
-//	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13|GPIO_Pin_14|GPIO_Pin_15;
-//	GPIO_Init(GPIOC, &GPIO_InitStructure);		
-//	//GPIO_ResetBits(GPIOC, GPIO_Pin_13|GPIO_Pin_14|GPIO_Pin_15);
-//	PWR_BackupAccessCmd(ENABLE);//允许修改RTC 和后备寄存器
-//	RCC_LSEConfig(RCC_LSE_OFF);//关闭外部低速外部时钟信号功能 后， PC14 PC15 才可以当普通IO用。
-//	PWR_BackupAccessCmd(DISABLE);//禁止修改后备寄存器
-//	BKP_TamperPinCmd(DISABLE);//关闭入侵检测功能，也就是 PC13，也可以当普通IO 使用
-//	BKP_ITConfig(DISABLE);
 }
 
 //Power up 
@@ -786,24 +752,9 @@ void PageLanguage(void)
 void PageMain(void)
 {
 	menuExit = 0;
-	dwD2DisPicWithL(PIC_MAIN);
-	
-	dwD2CancelKey();
-//	dwD2ListenKey(BIO1Pres, btnBIO1);
-	dwD2ListenKey(ScrubberPres, btnScrubber);
-	dwD2ListenKey(UltrasoundPres, btnUltrasound);
-	dwD2ListenKey(RFPres, btnRF);
-	dwD2ListenKey(O2Pres, btnO2);
-	dwD2ListenKey(CleanPres, btnClean);
-	dwD2ListenKey(IcePres, btnIce);
-	dwD2ListenKey(SprayerPres, btnSprayer);
-	dwD2ListenKey(CamPres, btnCam);
-	dwD2ListenKey(SetPres, btnSet);
-	dwD2ListenKey(StandbyPres, btnStandby);	//Standby
 	
 	while(!menuExit)
 	{
-		dwD2Handler();
 		if(nextPage!=FUNCTION_MAIN)
 		{
 			menuExit = 1;
@@ -817,39 +768,62 @@ void PageScrubber(void)
 {
 	menuExit = 0;
 	WorkTime = 1800;	
-	dwD2DisPicWithL(PIC_SCRUBBER);
-	dwD2DisTime(TIME_ADDRESS, WorkTime);
-	dwD2DisNum(NUM_ADDRESS, ScrubberIntensity);
-	dwD2DisChar(MODE_ADDRESS, ScrubberMode);
 	
 	TIM_SetAutoreload(TIM1, (u16)(720000/ScrubberFrequency));
 	ScrubberPWMIntensity = 720000/ScrubberFrequency*ScrubberPWMTable[ScrubberIntensity];
 	TIM_SetCompare1(TIM1,ScrubberPWMIntensity);
-	
-	dwD2CancelKey();
-//	dwD2ListenKey(BIO1Pres, btnBIO1);
-	dwD2ListenKey(ScrubberPres, btnScrubber);
-	dwD2ListenKey(UltrasoundPres, btnUltrasound);
-	dwD2ListenKey(RFPres, btnRF);
-	dwD2ListenKey(O2Pres, btnO2);
-	dwD2ListenKey(CleanPres, btnClean);
-	dwD2ListenKey(IcePres, btnIce);
-	dwD2ListenKey(SprayerPres, btnSprayer);
-	dwD2ListenKey(CamPres, btnCam);
-	dwD2ListenKey(SetPres, btnSet);
-	dwD2ListenKey(ScrubberAdjPres, btnScrubberAdj);
-	dwD2ListenKey(StandbyPres, btnStandby);	//Standby
-	dwD2ListenKey(TimeUpPres, btnTimeUp);
-	dwD2ListenKey(TimeDownPres, btnTimeDown);
-	dwD2ListenKey(IntensityUpPres, btnIntensityUp);
-	dwD2ListenKey(IntensityDownPres, btnIntensityDown);
-	dwD2ListenKey(ModeUpPres, btnModeUp);
-	dwD2ListenKey(ModeDownPres, btnModeDown);
-	dwD2ListenKey(StartPres, btnStart);
 
 	while(!menuExit)
 	{
-		dwD2Handler();
+		if(pad_agreement())
+		{
+			if(pad_rec_data[0]!=ADJ_COMMAND)
+			{
+				nextPage = pad_rec_data[1];
+				if(nextPage==FUNCTION_SCRUBBER)
+				{
+					if(pad_rec_data[3])
+						ScrubberWorkFlag = 1;
+					else
+						ScrubberWorkFlag = 0;
+					if(pad_rec_data[0]==PARAMETER_COMMAND)
+					{
+						if(pad_rec_data[4]==0)
+						{
+							ScrubberIntensity = pad_rec_data[5];
+							if(ScrubberIntensity<10)
+							{
+								ScrubberPWMIntensity = 720000/ScrubberFrequency*ScrubberPWMTable[ScrubberIntensity];
+								TIM_SetCompare1(TIM1,ScrubberPWMIntensity);
+							}
+						}
+						else
+						{
+							ScrubberMode = pad_rec_data[4];
+							if(ScrubberMode>2)
+								ScrubberMode = 2;
+						}
+					}
+					else
+					{
+						ScrubberMode = pad_rec_data[4];
+						if(ScrubberMode>2)
+							ScrubberMode = 2;
+						ScrubberIntensity = pad_rec_data[5];
+						if(ScrubberIntensity<10)
+						{
+							ScrubberPWMIntensity = 720000/ScrubberFrequency*ScrubberPWMTable[ScrubberIntensity];
+							TIM_SetCompare1(TIM1,ScrubberPWMIntensity);
+						}
+					}
+					pad_clear();
+				}
+			}
+			else
+			{
+				nextPage = FUNCTION_SCRUBBER_ADJ;
+			}
+		}
 		
 		if(BIT_GET(KeyScan(), 5))
 		{
@@ -868,7 +842,6 @@ void PageScrubber(void)
 				ScrubberIntensity = 0;
 				ScrubberMode = 0;
 				ScrubberWorkFlag = 0;
-				dwD2DisICO(START_ADDRESS, 0);
 			}
 		}
 		WorkTimeDeal();		
@@ -893,33 +866,15 @@ void ScrubberPWM(u8 i, u8 Work)
 		if(ScrubberTimeCnt<ScrubberModCompare[ScrubberModRenew])
 		{
 			TIM_CtrlPWMOutputs(TIM1,ENABLE);
-//			if(++ScrubberTimeCnt2>=12)
-//			{
-//				ScrubberTimeCnt2 = 0;
-////			POWER_ON_PIN = 1;
-//			}
-//			if(ScrubberTimeCnt2<3)
-//			{
-//				TIM_CtrlPWMOutputs(TIM1,ENABLE);
-////			POWER_ON_PIN = 1;
-//			}
-//			else
-//			{
-//				TIM_CtrlPWMOutputs(TIM1,DISABLE);
-//			}
 		}
 		else
 		{
 			TIM_CtrlPWMOutputs(TIM1,DISABLE);	
-//			POWER_ON_PIN = 0;		
-//			ScrubberTimeCnt2 = 0;
 		}			
 	}
 	else
 	{
-//		ScrubberTimeCnt2 = 0;
 		ScrubberTimeCnt = 0;
-//		POWER_ON_PIN = 0;	
 		TIM_CtrlPWMOutputs(TIM1,DISABLE);	
 	}
 }
@@ -927,6 +882,7 @@ void ScrubberPWM(u8 i, u8 Work)
 //ScrubberAdj
 void PageScrubberAdj(void)
 {
+	u16 tempADJ = 0;
 	ScrubberWorkFlag = 1;
 	ScrubberMode = 0;
 	ScrubberIntensity = 10;
@@ -940,21 +896,39 @@ void PageScrubberAdj(void)
 		STMFLASH_Write(FLASH_FREQ_ADDR, &ScrubberFrequency, 1);
 	}	
 	
-	dwD2DisPicWithL(PIC_SCRUBBER_ADJ);	
-	dwD2DisFre(FRE_ADDRESS, ScrubberFrequency);
-	
 	TIM_SetAutoreload(TIM1, (u16)(720000/ScrubberFrequency));
 	ScrubberPWMIntensity = 720000/ScrubberFrequency*ScrubberPWMTable[ScrubberIntensity];
 	TIM_SetCompare1(TIM1,ScrubberPWMIntensity);	
-
-	dwD2CancelKey();
-	dwD2ListenKey(MinPres, btnMin);
-	dwD2ListenKey(IntensityUpPres, btnScrubberAdjUp);
-	dwD2ListenKey(IntensityDownPres, btnScrubberAdjDown);	
 	
 	while(!menuExit)
 	{
-		dwD2Handler();
+		if(pad_agreement())
+		{
+			if(pad_rec_data[0]!=ADJ_COMMAND)
+			{
+				nextPage = pad_rec_data[1];
+			}
+			else
+			{
+				if(pad_rec_data[3])
+				{
+					tempADJ = ((u16)pad_rec_data[4]<<8)+pad_rec_data[5];
+					if(tempADJ<=300&&tempADJ>=100)
+					{
+						ScrubberFrequency = tempADJ;
+						TIM_SetAutoreload(TIM1, (u16)(720000/ScrubberFrequency));
+						ScrubberPWMIntensity = 720000/ScrubberFrequency*ScrubberPWMTable[ScrubberIntensity];
+						TIM_SetCompare1(TIM1, ScrubberPWMIntensity);
+					}
+				}
+				else
+				{
+					ScrubberWorkFlag = 0;
+				}
+				pad_clear();
+			}
+		}
+
 		if(nextPage!=FUNCTION_SCRUBBER_ADJ)
 		{
 			menuExit = 1;
@@ -975,40 +949,65 @@ void PageUltrasound(void)
 	
 	menuExit = 0;
 	WorkTime = 1800;
-	dwD2DisPicWithL(PIC_ULTRASOUND);
-	dwD2DisTime(TIME_ADDRESS, WorkTime);
-	dwD2DisNum(NUM_ADDRESS, UltrasoundIntensity);
-	dwD2DisChar(MODE_ADDRESS, UltrasoundMode);
-	
-	dwD2CancelKey();
-//	dwD2ListenKey(BIO1Pres, btnBIO1);
-	dwD2ListenKey(ScrubberPres, btnScrubber);
-	dwD2ListenKey(UltrasoundPres, btnUltrasound);
-	dwD2ListenKey(RFPres, btnRF);
-	dwD2ListenKey(O2Pres, btnO2);
-	dwD2ListenKey(CleanPres, btnClean);
-	dwD2ListenKey(IcePres, btnIce);
-	dwD2ListenKey(SprayerPres, btnSprayer);
-	dwD2ListenKey(CamPres, btnCam);
-	dwD2ListenKey(SetPres, btnSet);
-	dwD2ListenKey(StandbyPres, btnStandby);	//Standby
-	dwD2ListenKey(TimeUpPres, btnTimeUp);
-	dwD2ListenKey(TimeDownPres, btnTimeDown);
-	dwD2ListenKey(IntensityUpPres, btnIntensityUp);
-	dwD2ListenKey(IntensityDownPres, btnIntensityDown);
-	dwD2ListenKey(ModeUpPres, btnModeUp);
-	dwD2ListenKey(ModeDownPres, btnModeDown);
-	dwD2ListenKey(StartPres, btnStart);
 	
 	while(!menuExit)
 	{
-		dwD2Handler();
+		if(pad_agreement())
+		{
+			if(pad_rec_data[0]!=ADJ_COMMAND)
+			{
+				nextPage = pad_rec_data[1];
+				if(nextPage==FUNCTION_ULTRASOUND)
+				{
+					if(pad_rec_data[3])
+					{
+						UltrasoundWorkFlag = 1;
+						ULT_CON_PIN = 0;
+					}
+					else
+					{
+						UltrasoundWorkFlag = 0;
+						ULT_CON_PIN = 1;
+					}
+					if(pad_rec_data[0]==PARAMETER_COMMAND)
+					{
+						if(pad_rec_data[4]==0)
+						{
+							UltrasoundIntensity = pad_rec_data[5];
+							if(UltrasoundIntensity>10)
+								UltrasoundIntensity = 10;
+						}
+						else
+						{
+							UltrasoundMode = pad_rec_data[4];
+							if(UltrasoundMode>2)
+								UltrasoundMode = 2;
+						}
+					}
+					else
+					{
+						UltrasoundMode = pad_rec_data[4];
+						if(UltrasoundMode>2)
+							UltrasoundMode = 2;
+						UltrasoundIntensity = pad_rec_data[5];
+						if(UltrasoundIntensity>10)
+							UltrasoundIntensity = 10;
+					}
+					pad_clear();
+				}
+			}
+			else
+			{
+				nextPage = FUNCTION_SCRUBBER_ADJ;
+			}
+		}
+
 		if(BIT_GET(KeyScan(), 2))
 		{
 			if(keyTemp==0)
 			{
 				keyTemp = 1;
-				StartPres();
+				pad_send(&pad_key[0], sizeof(pad_key));
 			}
 		}
 		else
@@ -1023,7 +1022,6 @@ void PageUltrasound(void)
 				UltrasoundIntensity = 0;
 				UltrasoundMode = 0;
 				UltrasoundWorkFlag = 0;
-				dwD2DisICO(START_ADDRESS, 0);
 			}
 		}
 		WorkTimeDeal();		
@@ -1254,22 +1252,6 @@ void RFPWM(u8 i, u8 Work)
 		else
 		{
 			TIM_SetCompare4(TIM3, 0);
-//			if(RF_BUTTON_PIN==0)
-//			{
-//				if(++RFCnt>=20)
-//				{
-//					RFCnt = 20;
-//					rfKeyTemp = 1;
-//				}
-//			}
-//			else
-//			{
-//				if(--RFCnt<=0)
-//				{
-//					RFCnt = 1;
-//					rfKeyTemp = 0;
-//				}
-//			}
 		}	
 	}
 	else
@@ -1285,38 +1267,45 @@ void RFPWM(u8 i, u8 Work)
 //Ice function
 void PageIce(void)
 {
-  u8 keyTemp = 0;
+  	u8 keyTemp = 0;
 	
 	menuExit = 0;
 	WorkTime = 1800;
-	dwD2DisPicWithL(PIC_ICE);
-	dwD2DisTime(TIME_ADDRESS, WorkTime);
-	
-	dwD2CancelKey();
-//	dwD2ListenKey(BIO1Pres, btnBIO1);
-	dwD2ListenKey(ScrubberPres, btnScrubber);
-	dwD2ListenKey(UltrasoundPres, btnUltrasound);
-	dwD2ListenKey(RFPres, btnRF);
-	dwD2ListenKey(O2Pres, btnO2);
-	dwD2ListenKey(CleanPres, btnClean);
-	dwD2ListenKey(IcePres, btnIce);
-	dwD2ListenKey(SprayerPres, btnSprayer);
-	dwD2ListenKey(CamPres, btnCam);
-	dwD2ListenKey(SetPres, btnSet);
-	dwD2ListenKey(StandbyPres, btnStandby);	//Standby
-	dwD2ListenKey(TimeUpPres, btnTimeUp);
-	dwD2ListenKey(TimeDownPres, btnTimeDown);
-	dwD2ListenKey(StartPres, btnStart);
 	
 	while(!menuExit)
 	{
-		dwD2Handler();
+		if(pad_agreement())
+		{
+			if(pad_rec_data[0]!=ADJ_COMMAND)
+			{
+				nextPage = pad_rec_data[1];
+				if(nextPage==FUNCTION_ICE)
+				{
+					if(pad_rec_data[3])
+					{
+						ColdWorkFlag = 1;
+						COLD_CON_PIN = 0;
+					}
+					else
+					{
+						ColdWorkFlag = 0;
+						COLD_CON_PIN = 1;
+					}
+					pad_clear();
+				}
+			}
+			else
+			{
+				nextPage = FUNCTION_SCRUBBER_ADJ;
+			}
+		}
+
 		if(BIT_GET(KeyScan(), 0))
 		{
 			if(keyTemp==0)
 			{
 				keyTemp = 1;
-				StartPres();
+				pad_send(&pad_key[0], sizeof(pad_key));
 			}
 		}
 		else
@@ -1330,7 +1319,6 @@ void PageIce(void)
 			{
 				ColdMode = 0;
 				ColdWorkFlag = 0;
-				dwD2DisICO(START_ADDRESS, 0);
 			}
 		}
 		WorkTimeDeal();	
@@ -1361,34 +1349,51 @@ void PageO2(void)
 {	
 	menuExit = 0;
 	WorkTime = 1800;
-	dwD2DisPicWithL(PIC_O2);
-	dwD2DisTime(TIME_ADDRESS, WorkTime);
-	if (O2Mode == 0)
-		dwD2DisChar(MODE_ADDRESS, 61);
-	else
-		dwD2DisChar(MODE_ADDRESS, O2Mode-1);
-
-	dwD2CancelKey();
-//	dwD2ListenKey(BIO1Pres, btnBIO1);
-	dwD2ListenKey(ScrubberPres, btnScrubber);
-	dwD2ListenKey(UltrasoundPres, btnUltrasound);
-	dwD2ListenKey(RFPres, btnRF);
-	dwD2ListenKey(O2Pres, btnO2);
-	dwD2ListenKey(CleanPres, btnClean);
-	dwD2ListenKey(IcePres, btnIce);
-	dwD2ListenKey(SprayerPres, btnSprayer);
-	dwD2ListenKey(CamPres, btnCam);
-	dwD2ListenKey(SetPres, btnSet);
-	dwD2ListenKey(StandbyPres, btnStandby);	//Standby
-	dwD2ListenKey(TimeUpPres, btnTimeUp);
-	dwD2ListenKey(TimeDownPres, btnTimeDown);
-	dwD2ListenKey(ModeUpPres, btnModeUp);
-	dwD2ListenKey(ModeDownPres, btnModeDown);
-	dwD2ListenKey(StartPres, btnStart);
 	
 	while(!menuExit)
 	{
-		dwD2Handler();
+		if(pad_agreement())
+		{
+			if(pad_rec_data[0]!=ADJ_COMMAND)
+			{
+				nextPage = pad_rec_data[1];
+				if(nextPage==FUNCTION_O2)
+				{
+					if(pad_rec_data[3])
+					{
+						O2WorkFlag = 1;
+					}
+					else
+					{
+						O2WorkFlag = 0;
+					}
+					if(pad_rec_data[0]==PARAMETER_COMMAND)
+					{
+						if(pad_rec_data[4]==0)
+						{
+						}
+						else
+						{
+							O2Mode = pad_rec_data[4];
+							if(O2Mode>4)
+								O2Mode = 4;
+						}
+					}
+					else
+					{
+						O2Mode = pad_rec_data[4];
+						if(O2Mode>4)
+							O2Mode = 4;
+					}
+					pad_clear();
+				}
+			}
+			else
+			{
+				nextPage = FUNCTION_SCRUBBER_ADJ;
+			}
+		}
+
 		if(nextPage!=FUNCTION_O2)
 		{
 			menuExit = 1;
@@ -1396,7 +1401,6 @@ void PageO2(void)
 			{
 				O2Mode = 0;
 				O2WorkFlag = 0;
-				dwD2DisICO(START_ADDRESS, 0);
 			}
 		}
 		WorkTimeDeal();
@@ -1427,17 +1431,6 @@ void O2PWM(u8 i, u8 Work)
 					RGBValue = ((u16)RColor[AutoColor]<<11)|((u16)GColor[AutoColor]<<5)|(u16)BColor[AutoColor];
 					if(++AutoColor>5)
 						AutoColor = 0;
-//					if(RGBValue>0x07E0)
-//					{
-//						if(RGBValue>=0xF800)
-//							RGBValue = 1;
-//						else
-//							RGBValue = ((RGBValue>>11)+1)<<11;
-//					}
-//					else if(RGBValue>0x001F)
-//						RGBValue = ((RGBValue>>5)+1)<<5;
-//					else 
-//						RGBValue++;
 				}
 				break;
 			}
@@ -1479,39 +1472,59 @@ void PageClean(void)
 
 	menuExit = 0;
 	WorkTime = 1800;
-	dwD2DisPicWithL(PIC_CLEAN);	
-	dwD2DisTime(TIME_ADDRESS, WorkTime);
-	BottleASelect();
-	
-	dwD2CancelKey();
-//	dwD2ListenKey(BIO1Pres, btnBIO1);
-	dwD2ListenKey(ScrubberPres, btnScrubber);
-	dwD2ListenKey(UltrasoundPres, btnUltrasound);
-	dwD2ListenKey(RFPres, btnRF);
-	dwD2ListenKey(O2Pres, btnO2);
-	dwD2ListenKey(CleanPres, btnClean);
-	dwD2ListenKey(IcePres, btnIce);
-	dwD2ListenKey(SprayerPres, btnSprayer);
-	dwD2ListenKey(CamPres, btnCam);
-	dwD2ListenKey(SetPres, btnSet);
-	dwD2ListenKey(StandbyPres, btnStandby);	//Standby
-	dwD2ListenKey(TimeUpPres, btnTimeUp);
-	dwD2ListenKey(TimeDownPres, btnTimeDown);
-	dwD2ListenKey(StartPres, btnStart);
-	dwD2ListenKey(BottleASelect, btnBottleA);
-	dwD2ListenKey(BottleBSelect, btnBottleB);
-	dwD2ListenKey(BottleCSelect, btnBottleC);
-	dwD2ListenKey(BottleDSelect, btnBottleD);
 	
 	while(!menuExit)
 	{
-		dwD2Handler();
+		if(pad_agreement())
+		{
+			if(pad_rec_data[0]!=ADJ_COMMAND)
+			{
+				nextPage = pad_rec_data[1];
+				if(nextPage==FUNCTION_CLEAN)
+				{
+					if(pad_rec_data[3])
+					{
+						CleanWorkFlag = 1;
+						PEN_CON_PIN = 0;
+					}
+					else
+					{
+						CleanWorkFlag = 0;
+						PEN_CON_PIN = 1;
+					}
+					if(pad_rec_data[0]==PARAMETER_COMMAND)
+					{
+						if(pad_rec_data[4]==0)
+						{
+						}
+						else
+						{
+							CleanMode = pad_rec_data[4];
+							if(CleanMode>3)
+								CleanMode = 3;
+						}
+					}
+					else
+					{
+						CleanMode = pad_rec_data[4];
+						if(CleanMode>3)
+							CleanMode = 3;
+					}
+					pad_clear();
+				}
+			}
+			else
+			{
+				nextPage = FUNCTION_SCRUBBER_ADJ;
+			}
+		}
+
 		if(BIT_GET(KeyScan(), 4))	//handle start key
 		{
 			if(keyTemp==0)
 			{
 				keyTemp = 1;
-				StartPres();
+				pad_send(&pad_key[0], sizeof(pad_key));
 			}
 		}
 		else
@@ -1523,11 +1536,7 @@ void PageClean(void)
 			if((keyTemp2==0)||CleanWorkFlag)
 			{
 				keyTemp2 = 1;
-				dwD2DisICO(LEVEL_ADDRESS, 1);
-				PEN_CON_PIN = 1;
-				CleanWorkFlag = 0;
-				dwD2DisICO(START_ADDRESS, CleanWorkFlag);
-				INLINE_MUSIC_WATER_WARN();
+				pad_send(&pad_water_full[0], sizeof(pad_water_full));
 			}
 		}
 		else
@@ -1535,7 +1544,6 @@ void PageClean(void)
 			if(keyTemp2)
 			{
 				keyTemp2 = 0;
-				dwD2DisICO(LEVEL_ADDRESS, 0);
 			}
 		}
 		if(nextPage!=FUNCTION_CLEAN)
@@ -1545,7 +1553,6 @@ void PageClean(void)
 			{
 				CleanMode = 0;
 				CleanWorkFlag = 0;
-				dwD2DisICO(START_ADDRESS, 0);
 			}
 		}
 		WorkTimeDeal();
@@ -1582,40 +1589,69 @@ void PageBIO1(void)
 	
 	menuExit = 0;
 	WorkTime = 1800;
-	dwD2DisPicWithL(PIC_BIO1);
-	dwD2DisTime(TIME_ADDRESS, WorkTime);
-	dwD2DisNum(NUM_ADDRESS, BIO1Intensity);
-	dwD2DisChar(MODE_ADDRESS, BIO1Mode);		
-	
-	dwD2CancelKey();
-//	dwD2ListenKey(BIO1Pres, btnBIO1);
-	dwD2ListenKey(ScrubberPres, btnScrubber);
-	dwD2ListenKey(UltrasoundPres, btnUltrasound);
-	dwD2ListenKey(RFPres, btnRF);
-	dwD2ListenKey(O2Pres, btnO2);
-	dwD2ListenKey(CleanPres, btnClean);
-	dwD2ListenKey(IcePres, btnIce);
-	dwD2ListenKey(SprayerPres, btnSprayer);
-	dwD2ListenKey(CamPres, btnCam);
-	dwD2ListenKey(SetPres, btnSet);
-	dwD2ListenKey(StandbyPres, btnStandby);	//Standby
-	dwD2ListenKey(TimeUpPres, btnTimeUp);
-	dwD2ListenKey(TimeDownPres, btnTimeDown);
-	dwD2ListenKey(IntensityUpPres, btnIntensityUp);
-	dwD2ListenKey(IntensityDownPres, btnIntensityDown);
-	dwD2ListenKey(ModeUpPres, btnModeUp);
-	dwD2ListenKey(ModeDownPres, btnModeDown);
-	dwD2ListenKey(StartPres, btnStart);
 	
 	while(!menuExit)
 	{
-		dwD2Handler();
+		if(pad_agreement())
+		{
+			if(pad_rec_data[0]!=ADJ_COMMAND)
+			{
+				nextPage = pad_rec_data[1];
+				if(nextPage==FUNCTION_BIO1)
+				{
+					if(pad_rec_data[3])
+					{
+						BIO1WorkFlag = 1;
+						RF_CON_PIN = 0;
+					}
+					else
+					{
+						BIO1WorkFlag = 0;
+						RF_CON_PIN = 1;
+					}
+					if(pad_rec_data[0]==PARAMETER_COMMAND)
+					{
+						if(pad_rec_data[4]==0)
+						{
+							BIO1Intensity = pad_rec_data[5];
+							if(BIO1Intensity<10)
+							{
+								TIM_SetCompare4(TIM4, BIO1IntensityTable[BIO1Intensity]);
+							}
+						}
+						else
+						{
+							BIO1Mode = pad_rec_data[4];
+							if(BIO1Mode>2)
+								BIO1Mode = 2;
+						}
+					}
+					else
+					{
+						BIO1Mode = pad_rec_data[4];
+						if(BIO1Mode>2)
+							BIO1Mode = 2;
+						BIO1Intensity = pad_rec_data[5];
+						if(BIO1Intensity<10)
+						{
+							TIM_SetCompare4(TIM4, BIO1IntensityTable[BIO1Intensity]);
+						}
+					}
+					pad_clear();
+				}
+			}
+			else
+			{
+				nextPage = FUNCTION_SCRUBBER_ADJ;
+			}
+		}
+
 		if(BIT_GET(KeyScan(), 1))
 		{
 			if(keyTemp==0)
 			{
 				keyTemp = 1;
-				StartPres();
+				pad_send(&pad_key[0], sizeof(pad_key));
 			}
 		}
 		else
@@ -1631,7 +1667,6 @@ void PageBIO1(void)
 				BIO1Intensity = 0;
 				BIO1Mode = 0;
 				BIO1WorkFlag = 0;
-				dwD2DisICO(START_ADDRESS, 0);
 			}
 		}
 		
@@ -1676,47 +1711,53 @@ void PageSprayer(void)
 
 	menuExit = 0;
 	WorkTime = 1800;
-	dwD2DisPicWithL(PIC_SPRAYER);
-	dwD2DisTime(TIME_ADDRESS, WorkTime);
-	
-	dwD2CancelKey();
-//	dwD2ListenKey(BIO1Pres, btnBIO1);
-	dwD2ListenKey(ScrubberPres, btnScrubber);
-	dwD2ListenKey(UltrasoundPres, btnUltrasound);
-	dwD2ListenKey(RFPres, btnRF);
-	dwD2ListenKey(O2Pres, btnO2);
-	dwD2ListenKey(CleanPres, btnClean);
-	dwD2ListenKey(IcePres, btnIce);
-	dwD2ListenKey(SprayerPres, btnSprayer);
-	dwD2ListenKey(CamPres, btnCam);
-	dwD2ListenKey(SetPres, btnSet);
-	dwD2ListenKey(StandbyPres, btnStandby);	//Standby
-	dwD2ListenKey(TimeUpPres, btnTimeUp);
-	dwD2ListenKey(TimeDownPres, btnTimeDown);
-	dwD2ListenKey(StartPres, btnStart);
 		
 	while(!menuExit)
 	{
-		dwD2Handler();
-		// if(BIT_GET(KeyScan(), 3))
-		// {
-		// 	if(keyTemp==0)
-		// 	{
-		// 		keyTemp = 1;
-		// 		StartPres();
-		// 	}
-		// }
-		// else
-		// {
-		// 	keyTemp = 0;
-		// }
+		if(pad_agreement())
+		{
+			if(pad_rec_data[0]!=ADJ_COMMAND)
+			{
+				nextPage = pad_rec_data[1];
+				if(nextPage==FUNCTION_SPRAYER)
+				{
+					if(pad_rec_data[3])
+					{
+						SprayerWorkFlag = 1;
+						GUN_CON_PIN = 0;
+					}
+					else
+					{
+						SprayerWorkFlag = 0;
+						GUN_CON_PIN = 1;
+					}
+					pad_clear();
+				}
+			}
+			else
+			{
+				nextPage = FUNCTION_SCRUBBER_ADJ;
+			}
+		}
+
+		if(BIT_GET(KeyScan(), 3))
+		{
+			if(keyTemp==0)
+			{
+				keyTemp = 1;
+				pad_send(&pad_key[0], sizeof(pad_key));
+			}
+		}
+		else
+		{
+			keyTemp = 0;
+		}
 		if(nextPage!=FUNCTION_SPRAYER)
 		{
 			menuExit = 1;
 			if(nextPage!=FUNCTION_MAIN)
 			{
 				SprayerWorkFlag = 0;
-				dwD2DisICO(START_ADDRESS, 0);
 			}
 		}
 		WorkTimeDeal();	
