@@ -535,6 +535,11 @@
               <FileType>1</FileType>
               <FilePath>.\User_Src\stmflash.c</FilePath>
             </File>
+            <File>
+              <FileName>pad_com.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\User_Src\pad_com.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

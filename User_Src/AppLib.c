@@ -1536,6 +1536,7 @@ void PageClean(void)
 			if((keyTemp2==0)||CleanWorkFlag)
 			{
 				keyTemp2 = 1;
+				CleanWorkFlag = 0;
 				pad_send(&pad_water_full[0], sizeof(pad_water_full));
 			}
 		}
