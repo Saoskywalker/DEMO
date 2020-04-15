@@ -912,6 +912,7 @@ void PageScrubberAdj(void)
 			{
 				if(pad_rec_data[3])
 				{
+					ScrubberWorkFlag = 1;
 					tempADJ = ((u16)pad_rec_data[4]<<8)+pad_rec_data[5];
 					if(tempADJ<=300&&tempADJ>=100)
 					{
