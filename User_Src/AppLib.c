@@ -103,7 +103,6 @@ static void StandbyPres(void)
 	INLINE_MUSIC_STANDBY();
 	nextPage = FUNCTION_RESTART;
 	dwD2SetBL(0X03, 0X03, 0XFFFF);	//change display light
-	PUMP24_PIN = 0;	//Close front LED
 }
 
 static void CamPres(void)
@@ -593,7 +592,6 @@ static void EnterPres(void)
 	INLINE_MUSIC_REDAY();
 	dwD2DisPicNoL(PIC_START_ANIMATION);
 	dwD2SetBL(0X64, 0X64, 0XFFFF);	//change display light
-	PUMP24_PIN = 1;
 }
 
 static void MinPres(void)
@@ -1326,6 +1324,7 @@ void PageIce(void)
 		
 		if(ColdWorkFlag)
 		{
+			PUMP12_PIN = 1; //open water pump
 			POWER_ON_PIN = 1;
 			if(ColdMode)
 				COLD_HOT_PIN = 1;
@@ -1334,6 +1333,7 @@ void PageIce(void)
 		}
 		else		
 		{
+			PUMP12_PIN = 0;
 			COLD_CON_PIN = 1;
 			COLD_HOT_PIN = 0;
 			POWER_ON_PIN = 0;
@@ -1770,10 +1770,10 @@ void PageSprayer(void)
 		}
 		else
 		{
-			// GUN_CON_PIN = 1;
 			GUN_CHANNEL_PIN = 0;
 		}
-	} 
+	}
+	GUN_CON_PIN = 1;
 }
 
 //Handle Key scan

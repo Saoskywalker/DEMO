@@ -25,7 +25,7 @@
 #define POWER_ON_PIN PBout(5)
 #define COLD_HOT_PIN PBout(6)
 #define PUMP220_PIN PDout(2)
-#define PUMP24_PIN PCout(9)
+#define PUMP12_PIN PCout(9)
 #define O2_VALVE1_PIN PAout(5)
 #define O2_VALVE2_PIN PAout(4)
 #define GUN_CHANNEL_PIN PBout(4)
