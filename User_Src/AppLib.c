@@ -1324,7 +1324,7 @@ void PageIce(void)
 		
 		if(ColdWorkFlag)
 		{
-			PUMP12_PIN = 1; //open water pump
+			PUMP12_PIN = 1; //open water pump 
 			POWER_ON_PIN = 1;
 			if(ColdMode)
 				COLD_HOT_PIN = 1;
